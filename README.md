@@ -1,58 +1,36 @@
-# User Preferences Page Development
+Webix Jet Demo App
+===================
 
-## Overview
-This project focuses on developing a **User Preferences Page** using the **Webix framework** for a web application. The page enables users to manage and customize their settings, offering a user-friendly interface that is intuitive and responsive across various devices.
+### How to run
 
-## Requirements
+- run ```npm install```
+- run ```npm start```
+- open ```http://localhost:5173```
 
-The user preferences page includes the following key features:
+For more details, check https://www.gitbook.com/book/webix/webix-jet/details
 
-### 1. **Preference Categories**
-Preferences are grouped into the following categories for easy navigation:
+### Other commands
 
-- **Account Settings**  
-  Users can manage their account details such as:
-  - Username
-  - Email
-  - Password
+#### Run lint
 
-- **Notification Settings**  
-  Control email and push notification preferences, including options for setting the frequency of notifications.
+```
+npm run lint
+```
 
-- **Theme Settings**  
-  Customize the application theme with the following options:
-  - Colors
-  - Fonts
-  - Layout
+#### Build production files
 
-- **Privacy Settings**  
-  Users can manage privacy preferences such as:
-  - Profile visibility
-  - Data sharing options
+```
+npm run build
+```
 
-### 2. **Responsive Design**
-The user preferences page is designed to be **responsive** for various devices:
-- Desktop
-- Tablet
-- Mobile
+After that you can copy the "codebase" folder to the production server
 
-The page ensures a consistent user experience across all screen sizes.
+### Difference from WebPack version
 
-### 3. **Validation and Error Handling**
-The page includes robust **validation** and **error handling** mechanisms:
-- Data integrity checks for user input.
-- Clear, meaningful error messages displayed to users when modifying preferences.
+- .env file added, it stores global constants
+- app.js contains section that imports all files from "views" folder and assigns custom view resolver to the app class
+- optional, app.js contains custom locale loader
 
-### 4. **Accessibility**
-The design follows **accessibility standards** to ensure the page is usable by all users, including those with disabilities. Features include:
-- Keyboard navigation support
-- Screen reader compatibility
-- High contrast color schemes for readability
+### License
 
-### 5. **Testing**
-Unit and functional tests are implemented to ensure that the preferences page functions correctly. Tests cover:
-- UI interactions
-- Form validation
-- Error handling
-
-
+MIT
