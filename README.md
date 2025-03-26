@@ -55,9 +55,4 @@ Unit and functional tests are implemented to ensure that the preferences page fu
 - Form validation
 - Error handling
 
-## Technologies Used
-- **Webix Framework**: For creating the UI components and layout.
-- **HTML5**: For structure and semantic markup.
-- **CSS3**: For styling and responsiveness.
-- **JavaScript (ES6+)**: For interactivity and logic implementation.
-- **Jest**: For unit and functional testing.
+
