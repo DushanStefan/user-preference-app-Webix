@@ -56,3 +56,18 @@
 	font-size:20px;
 	vertical-align:middle;
 }
+
+
+:root {
+    --primary-color: #3498db;
+    --background-color: #ffffff;
+    --text-color: #2c3e50;
+    --font-family: system-ui;
+}
+
+body,
+.webix_view {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: var(--font-family);
+}
