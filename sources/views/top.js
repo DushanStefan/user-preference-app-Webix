@@ -34,6 +34,7 @@ export default class TopView extends JetView {
       view: "sidebar",
       id: "$sidebar1",
       data: menu_data,
+      css: "light-blue-sidebar",
 
       on: {
         onItemMouseIn: function (id) {

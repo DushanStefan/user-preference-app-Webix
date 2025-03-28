@@ -23,31 +23,10 @@ export default class AccountSettingsView extends JetView {
               header: "Security",
               body: this._securityTab(),
             },
-            {
-              header: "Privacy",
-              body: this._privacyTab(),
-            },
+
             {
               header: "Login Activity",
               body: this._loginActivityTab(),
-            },
-          ],
-        },
-        {
-          margin: 10,
-          cols: [
-            { width: 150 }, // Spacer
-            {
-              view: "button",
-              value: "Save Changes",
-              css: "webix_primary",
-              click: () => this.saveChanges(),
-            },
-            {
-              view: "button",
-              value: "Cancel",
-              css: "webix_secondary",
-              click: () => this.cancelChanges(),
             },
           ],
         },
@@ -91,46 +70,129 @@ export default class AccountSettingsView extends JetView {
                       this._handleProfilePicUpload(file),
                   },
                 },
+                {
+                  view: "button",
+                  value: "Remove Profile Photo",
+                  css: "webix_danger",
+                  click: () => this.removeProfilePhoto(),
+                },
               ],
               width: 250,
+              padding: { right: 20 },
             },
+            { width: 20 },
             // Personal Details Section
+
             {
+              id: "userForm",
               rows: [
                 {
                   view: "text",
                   label: "Full Name",
                   name: "full_name",
                   placeholder: "Enter full name",
+                  bottomPadding: 20,
+                  labelWidth: 150,
                 },
                 {
                   view: "text",
                   label: "Username",
                   name: "username",
                   placeholder: "Choose a username",
+                  bottomPadding: 20,
+                  labelWidth: 150,
                 },
                 {
                   view: "text",
                   label: "Email",
                   name: "email",
                   placeholder: "Enter email address",
+                  bottomPadding: 20,
+                  labelWidth: 150,
+                  validate: webix.rules.isEmail,
+                  invalidMessage: "Please enter a valid email address.",
+                },
+                {
+                  view: "combo",
+                  label: "Country Code",
+                  id: "countryCode",
+                  options: [
+                    { id: "+1", value: "USA (+1)" },
+                    { id: "+44", value: "UK (+44)" },
+                    { id: "+91", value: "India (+91)" },
+                    // Add more country codes as needed
+                  ],
+                  value: "+1", // Default country code
+                  required: true,
+                },
+                {
+                  view: "text",
+                  label: "Mobile Number",
+                  id: "mobileNumber",
+                  name: "mobile",
+                  placeholder: "Enter mobile number",
+                  required: true,
+                  invalidMessage: "Please enter a valid mobile number.",
+                  validate: function (value) {
+                    const countryCode = $$("countryCode").getValue();
+                    let minLength = 10; // Default min length
+                    let maxLength = 10; // Default max length
+
+                    // Adjust lengths based on the country code
+                    if (countryCode === "+1") {
+                      minLength = maxLength = 10; // USA
+                    } else if (countryCode === "+44") {
+                      minLength = maxLength = 10; // UK
+                    } else if (countryCode === "+91") {
+                      minLength = 10; // India
+                      maxLength = 10;
+                    }
+
+                    // Check length
+                    if (value.length < minLength || value.length > maxLength) {
+                      return false;
+                    }
+                    return true;
+                  },
                 },
                 {
                   view: "datepicker",
                   label: "Date of Birth",
                   name: "dob",
                   format: "%Y-%m-%d",
+                  bottomPadding: 20,
+                  labelWidth: 150,
+                },
+                {
+                  view: "textarea",
+                  label: "Bio",
+                  name: "bio",
+                  height: 100,
+                  placeholder: "Tell us about yourself",
+                  bottomPadding: 20,
+                  labelWidth: 150,
                 },
               ],
             },
           ],
         },
         {
-          view: "textarea",
-          label: "Bio",
-          name: "bio",
-          height: 100,
-          placeholder: "Tell us about yourself",
+          margin: 10,
+          cols: [
+            { width: 150 }, // Spacer
+            {
+              view: "button",
+              value: "Save Personal Info",
+              css: "webix_primary",
+              click: () => this.savePersonalInfo(),
+            },
+            {
+              view: "button",
+              value: "Cancel",
+              css: "webix_secondary",
+              click: () => this.cancelPersonalInfo(),
+            },
+          ],
         },
       ],
     };
@@ -144,40 +206,42 @@ export default class AccountSettingsView extends JetView {
           type: "password",
           label: "Current Password",
           name: "current_password",
+          bottomPadding: 20,
+          labelWidth: 150,
         },
         {
           view: "text",
           type: "password",
           label: "New Password",
           name: "new_password",
+          bottomPadding: 20,
+          labelWidth: 150,
         },
         {
           view: "text",
           type: "password",
           label: "Confirm Password",
           name: "confirm_password",
-        },
-      ],
-    };
-  }
-
-  _privacyTab() {
-    return {
-      rows: [
-        {
-          view: "checkbox",
-          label: "Profile Visibility",
-          name: "profile_visible",
+          bottomPadding: 20,
+          labelWidth: 150,
         },
         {
-          view: "checkbox",
-          label: "Allow Data Sharing",
-          name: "data_sharing",
-        },
-        {
-          view: "checkbox",
-          label: "Receive Marketing Emails",
-          name: "marketing_emails",
+          margin: 10,
+          cols: [
+            { width: 150 },
+            {
+              view: "button",
+              value: "Save Security Settings",
+              css: "webix_primary",
+              click: () => this.saveSecuritySettings(),
+            },
+            {
+              view: "button",
+              value: "Cancel",
+              css: "webix_secondary",
+              click: () => this.cancelSecuritySettings(),
+            },
+          ],
         },
       ],
     };
@@ -190,11 +254,28 @@ export default class AccountSettingsView extends JetView {
         { id: "date", header: "Date", width: 150 },
         { id: "ip", header: "IP Address", width: 150 },
         { id: "device", header: "Device", fillspace: true },
+        {
+          id: "delete",
+          header: "",
+          template: "<span class='delete-btn webix_icon wxi-trash'></span>",
+          width: 50,
+        },
       ],
       data: [
-        { date: "2024-03-27", ip: "192.168.1.1", device: "Chrome, Windows" },
-        { date: "2024-03-26", ip: "10.0.0.1", device: "Safari, MacOS" },
+        {
+          id: 1,
+          date: "2024-03-27",
+          ip: "192.168.1.1",
+          device: "Chrome, Windows",
+        },
+        { id: 2, date: "2024-03-26", ip: "10.0.0.1", device: "Safari, MacOS" },
       ],
+      onClick: {
+        "delete-btn": function (e, id) {
+          this.remove(id); // Removes the entry
+          return false;
+        },
+      },
     };
   }
 
@@ -204,16 +285,43 @@ export default class AccountSettingsView extends JetView {
 
   _handleProfilePicUpload(upload) {
     const file = upload.file;
-    if (file) {
+
+    // Check if the file is an image (JPEG, PNG, or WebP)
+    const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
+    if (file && allowedTypes.includes(file.type)) {
       const reader = new FileReader();
+
       reader.onload = (e) => {
+        // Set the profile image preview to the uploaded file
         $$("profile_pic_preview").setValues({
           profile_pic: e.target.result,
         });
+
+        // Store the image in localStorage
+        localStorage.setItem("profile_pic", e.target.result);
       };
-      reader.readAsDataURL(file);
+
+      reader.readAsDataURL(file); // Read the file as a Data URL
+    } else {
+      // Show an error message if the file type is not valid
+      webix.message({
+        text: "Only image files (JPEG, PNG, WebP) are allowed.",
+        type: "error",
+      });
     }
-    return true;
+
+    return true; // Allow the file to be processed
+  }
+
+  removeProfilePhoto() {
+    $$("profile_pic_preview").setValues({
+      profile_pic: this.getDefaultAvatar(),
+    });
+    $$("profile_pic_uploader").clear();
+    webix.message({
+      text: "Profile photo removed successfully.",
+      type: "info",
+    });
   }
 
   getDefaultAvatar() {
@@ -224,6 +332,91 @@ export default class AccountSettingsView extends JetView {
     </svg>`;
   }
 
+  savePersonalInfo() {
+    const formData = $$("account_settings_form").getValues();
+    if (!formData.full_name || !formData.email) {
+      webix.message({
+        text: "Please fill in required fields",
+        type: "error",
+      });
+      return;
+    }
+    if ($$("userForm").validate() == false) {
+      webix.message("Please fill in the correct details.");
+      return;
+    }
+
+    webix.message({
+      text: "Personal Info saved successfully!",
+      type: "success",
+    });
+    console.log("Saved Personal Info:", formData);
+  }
+
+  cancelPersonalInfo() {
+    this.loadUserData();
+    webix.message({
+      text: "Personal Info changes cancelled",
+      type: "info",
+    });
+  }
+
+  // saveSecuritySettings() {
+  //   const formData = $$("account_settings_form").getValues();
+  //   // Implement saving security settings logic here
+  //   webix.message({
+  //     text: "Security settings saved successfully!",
+  //     type: "success",
+  //   });
+  //   console.log("Saved Security Settings:", formData);
+  // }
+
+  saveSecuritySettings() {
+    const formData = $$("account_settings_form").getValues();
+
+    // Get the current, new, and confirm password values
+    const currentPassword = formData.current_password;
+    const newPassword = formData.new_password;
+    const confirmPassword = formData.confirm_password;
+    console.log(currentPassword, newPassword, confirmPassword);
+
+    // Check if new password and confirm password match
+    if (newPassword !== confirmPassword) {
+      webix.message({
+        text: "New Password and Confirm Password do not match.",
+        type: "error",
+      });
+      return;
+    }
+
+    // Password strength validation (e.g., at least 8 characters, contains both letters and numbers)
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@#$%^&+=]{8,}$/;
+    // Minimum 8 characters, at least one letter and one number
+    if (!passwordRegex.test(newPassword)) {
+      webix.message({
+        text: "Password must be at least 8 characters long and contain both letters and numbers.",
+        type: "error",
+      });
+      return;
+    }
+
+    // Proceed with saving the security settings if validation passes
+    webix.message({
+      text: "Security settings saved successfully!",
+      type: "success",
+    });
+
+    // Here, you would typically call an API to save the changes, e.g., saving the new password to the backend
+    console.log("Saved Security Settings:", formData);
+  }
+
+  cancelSecuritySettings() {
+    this.loadUserData();
+    webix.message({
+      text: "Security settings changes cancelled",
+      type: "info",
+    });
+  }
   loadUserData() {
     const userData = {
       full_name: "John Doe",

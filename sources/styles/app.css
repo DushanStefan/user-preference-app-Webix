@@ -149,3 +149,33 @@ body,
 .login-button:hover {
     background-color: #0056b3;
 }
+
+
+
+
+
+
+
+ .light-blue-sidebar .webix_scroll_cont {
+     background-color: #e0f7fa;
+     /* Light blue */
+ }
+
+ .light-blue-sidebar .webix_list_item {
+     background-color: #e0f7fa;
+     color: #01579b;
+     border-bottom: 3px solid #b217b8;
+     /* Divider between items */
+     padding: 8px 12px;
+     /* Add spacing */
+ }
+
+ .light-blue-sidebar .webix_list_item:hover {
+     background-color: #b3e5fc;
+ }
+
+ .light-blue-sidebar .webix_list_item:last-child {
+     border-bottom: none;
+     /* Remove divider from the last item */
+ }
+
