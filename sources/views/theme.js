@@ -4,194 +4,184 @@ export default class ThemeSettingsView extends JetView {
   config() {
     return {
       view: "form",
-      id: "themeSettingsForm",
-      elemHeight: 600,
+      id: "theme_settings",
       elements: [
+        // Color Theme Section
         {
-          view: "template",
-          template: "Theme Customization",
-          type: "section",
+          view: "label",
+          label: "Color Theme",
+          css: "section_header",
         },
         {
-          rows: [
-            // Theme Selection
-            {
-              view: "dataview",
-              id: "themeSelector",
-              width: 400,
-              height: 150,
-              xCount: 3,
-              template: "#name#",
-              data: [
-                {
-                  id: "default",
-                  name: "Default",
-                  primaryColor: "#3498db",
-                  backgroundColor: "#ffffff",
-                  textColor: "#2c3e50",
-                },
-                {
-                  id: "dark",
-                  name: "Dark",
-                  primaryColor: "#2980b9",
-                  backgroundColor: "#2c3e50",
-                  textColor: "#ecf0f1",
-                },
-                {
-                  id: "light",
-                  name: "Light",
-                  primaryColor: "#2ecc71",
-                  backgroundColor: "#f1f2f6",
-                  textColor: "#2f3542",
-                },
-                {
-                  id: "ocean",
-                  name: "Ocean",
-                  primaryColor: "#34495e",
-                  backgroundColor: "#2c3e50",
-                  textColor: "#bdc3c7",
-                },
-                {
-                  id: "sunset",
-                  name: "Sunset",
-                  primaryColor: "#e74c3c",
-                  backgroundColor: "#f39c12",
-                  textColor: "#ffffff",
-                },
-              ],
-              type: {
-                template: (obj) => `
-                                    <div style='
-                                        background-color:${obj.backgroundColor};
-                                        color:${obj.textColor};
-                                        border:3px solid ${obj.primaryColor};
-                                        height:100px;
-                                        display:flex;
-                                        align-items:center;
-                                        justify-content:center;
-                                        margin:5px;
-                                    '>
-                                        ${obj.name} Theme
-                                    </div>
-                                `,
-                width: 120,
-                height: 120,
-              },
-              select: true,
-              on: {
-                onItemClick: (id) => this.selectTheme(id),
-              },
-            },
-
-            // Font Settings
-            {
-              view: "select",
-              label: "Font Family",
-              id: "fontSelector",
-              options: [
-                { id: "system", value: "System Default" },
-                { id: "roboto", value: "Roboto" },
-                { id: "opensans", value: "Open Sans" },
-                { id: "lato", value: "Lato" },
-              ],
-              value: "system",
-            },
-
-            // Action Buttons
-            {
-              margin: 10,
-              cols: [
-                {
-                  view: "button",
-                  value: "Apply Theme",
-                  css: "webix_primary",
-                  click: () => this.applyTheme(),
-                },
-                {
-                  view: "button",
-                  value: "Reset",
-                  css: "webix_secondary",
-                  click: () => this.resetTheme(),
-                },
-              ],
-            },
+          view: "radio",
+          id: "color_theme",
+          name: "color_theme",
+          label: "Select Theme",
+          value: "light",
+          options: [
+            { id: "light", value: "Light Mode" },
+            { id: "dark", value: "Dark Mode" },
           ],
+          on: {
+            onChange: (newValue) => this.applyColorTheme(newValue),
+          },
+        },
+
+        // Font & Typography Section
+        {
+          view: "label",
+          label: "Font & Typography",
+          css: "section_header",
+        },
+        {
+          view: "select",
+          id: "font_family",
+          name: "font_family",
+          label: "Font Family",
+          value: "default",
+          options: [
+            { id: "default", value: "Default System Font" },
+            { id: "sporty", value: "Sporty" },
+            { id: "formal", value: "Formal" },
+            { id: "dyslexic", value: "Dyslexia Friendly" },
+          ],
+          on: {
+            onChange: (newValue) => this.validateAndApplyFont(newValue),
+          },
+        },
+        {
+          view: "slider",
+          id: "font_size",
+          name: "font_size",
+          label: "Font Size",
+          value: 16,
+          min: 12,
+          max: 24,
+          step: 2,
+          title: webix.template("#value#px"),
+          on: {
+            onChange: (newValue) => this.adjustFontSize(newValue),
+          },
+        },
+
+        // Accessibility Features Section
+        {
+          view: "label",
+          label: "Accessibility Features",
+          css: "section_header",
+        },
+        {
+          view: "switch",
+          id: "high_contrast",
+          name: "high_contrast",
+          label: "High Contrast Mode",
+          value: 0,
+          on: {
+            onChange: (newValue) => this.toggleHighContrast(newValue),
+          },
+        },
+        {
+          view: "switch",
+          id: "dyslexia_font",
+          name: "dyslexia_font",
+          label: "Dyslexia Friendly Font",
+          value: 0,
+          on: {
+            onChange: (newValue) => this.toggleDyslexiaFont(newValue),
+          },
+        },
+
+        // Save Button
+        {
+          view: "button",
+          value: "Save Theme Preferences",
+          click: () => this.saveThemeSettings(),
         },
       ],
     };
   }
 
   init() {
-    // Set default theme
-    this.currentTheme = "default";
+    // Initial theme application
+    this.applyColorTheme($$("color_theme").getValue());
   }
 
-  selectTheme(themeId) {
-    this.currentTheme = themeId;
+  validateAndApplyFont(fontValue) {
+    // Limit custom fonts to prevent performance issues
+    const performanceThreshold = 3; // Max number of custom fonts
+    const customFonts = ["sporty", "formal", "dyslexic"];
+
+    // Check if selected font is a custom font
+    if (customFonts.includes(fontValue)) {
+      // Simulate a check for existing custom fonts in use
+      webix.message({
+        type: "warning",
+        text: `Applying ${fontValue} font. Be mindful of performance.`,
+      });
+    }
+
+    // Apply font logic would go here
+    document.body.style.fontFamily = this.getFontFamily(fontValue);
   }
 
-  applyTheme() {
-    // Get selected theme data
-    const themeData = this.$$("themeSelector").getItem(this.currentTheme);
-    const fontFamily = this.$$("fontSelector").getValue();
-
-    // Apply global styles
-    document.documentElement.style.setProperty(
-      "--primary-color",
-      themeData.primaryColor
-    );
-    document.documentElement.style.setProperty(
-      "--background-color",
-      themeData.backgroundColor
-    );
-    document.documentElement.style.setProperty(
-      "--text-color",
-      themeData.textColor
-    );
-
-    // Apply font
+  getFontFamily(fontValue) {
     const fontMap = {
-      system: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI"',
-      roboto: '"Roboto", sans-serif',
-      opensans: '"Open Sans", sans-serif',
-      lato: '"Lato", sans-serif',
+      default: "system-ui, -apple-system, BlinkMacSystemFont, sans-serif",
+      sporty: '"Arial", sans-serif',
+      formal: '"Times New Roman", serif',
+      dyslexic: '"OpenDyslexic", Arial, sans-serif',
     };
-    document.documentElement.style.setProperty(
-      "--font-family",
-      fontMap[fontFamily]
-    );
+    return fontMap[fontValue] || fontMap["default"];
+  }
 
-    // Modify Webix global theme
-    webix.css.addRule(`
-            .webix_view, body {
-                background-color: var(--background-color) !important;
-                color: var(--text-color) !important;
-                font-family: var(--font-family) !important;
-            }
-            .webix_button, .webix_el_button {
-                background-color: var(--primary-color) !important;
-                color: white !important;
-            }
-        `);
+  applyColorTheme(theme) {
+    if (theme === "dark") {
+      document.body.classList.add("dark-theme");
+      document.body.classList.remove("light-theme");
+    } else {
+      document.body.classList.add("light-theme");
+      document.body.classList.remove("dark-theme");
+    }
+  }
 
-    // Optional: Dynamically reload Webix CSS
-    webix.html.removeCSS();
+  adjustFontSize(size) {
+    document.body.style.fontSize = `${size}px`;
+  }
 
+  toggleHighContrast(isEnabled) {
+    if (isEnabled) {
+      document.body.classList.add("high-contrast");
+    } else {
+      document.body.classList.remove("high-contrast");
+    }
+  }
+
+  toggleDyslexiaFont(isEnabled) {
+    if (isEnabled) {
+      // Automatically select dyslexia-friendly font
+      $$("font_family").setValue("dyslexic");
+    } else {
+      // Reset to default font
+      $$("font_family").setValue("default");
+    }
+  }
+
+  saveThemeSettings() {
+    const settings = {
+      colorTheme: $$("color_theme").getValue(),
+      fontFamily: $$("font_family").getValue(),
+      fontSize: $$("font_size").getValue(),
+      highContrast: $$("high_contrast").getValue(),
+      dyslexiaFont: $$("dyslexia_font").getValue(),
+    };
+
+    // Simulate saving settings
     webix.message({
       type: "success",
-      text: "Theme applied successfully!",
+      text: "Theme preferences saved successfully!",
     });
-  }
 
-  resetTheme() {
-    // Reset to default theme
-    this.$$("themeSelector").select("default");
-    this.$$("fontSelector").setValue("system");
-    this.applyTheme();
-
-    webix.message({
-      type: "info",
-      text: "Theme reset to default!",
-    });
+    // In a real application, you'd send these settings to a backend
+    console.log("Theme Settings:", settings);
   }
 }

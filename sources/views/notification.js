@@ -1,309 +1,160 @@
-// import { JetView } from "webix-jet";
-
-// export default class NotificationSettingsView extends JetView {
-//   config() {
-//     return {
-//       view: "form",
-//       id: "notificationSettingsForm",
-//       width: 400,
-//       elements: [
-//         {
-//           view: "checkbox",
-//           label: "Email Notifications",
-//           name: "email_notifications",
-//           labelWidth: 180,
-//         },
-//         {
-//           view: "checkbox",
-//           label: "Push Notifications",
-//           name: "push_notifications",
-//           labelWidth: 180,
-//         },
-//         {
-//           view: "richselect",
-//           label: "Notification Frequency",
-//           name: "notification_frequency",
-//           options: [
-//             { id: "immediate", value: "Immediate" },
-//             { id: "daily", value: "Daily" },
-//             { id: "weekly", value: "Weekly" },
-//           ],
-//           labelWidth: 180,
-//         },
-//         {
-//           margin: 10,
-//           cols: [
-//             {
-//               view: "button",
-//               value: "Cancel",
-//               css: "webix_secondary",
-//               click: () => this.cancel(),
-//             },
-//             {
-//               view: "button",
-//               value: "Save",
-//               type: "form",
-//               css: "webix_primary",
-//               click: () => this.saveData(),
-//             },
-//           ],
-//         },
-//       ],
-//     };
-//   }
-
-//   saveData() {
-//     const form = this.getRoot();
-//     if (form.validate()) {
-//       webix.message({
-//         type: "success",
-//         text: "Notification settings saved successfully",
-//       });
-//     } else {
-//       webix.message({
-//         type: "error",
-//         text: "Please check the form for errors.",
-//       });
-//     }
-//   }
-
-//   cancel() {
-//     this.getRoot().clear();
-//     webix.message("Changes discarded");
-//   }
-// }
-//----------------------------------
-// import { JetView } from "webix-jet";
-
-// export default class NotificationSettingsView extends JetView {
-//   config() {
-//     return {
-//       view: "form",
-//       id: "notificationSettingsForm",
-//       elements: [
-//         {
-//           view: "checkbox",
-//           label: "Email Notifications",
-//           name: "email_notifications",
-//         },
-//         {
-//           view: "checkbox",
-//           label: "Push Notifications",
-//           name: "push_notifications",
-//         },
-//         {
-//           view: "richselect",
-//           label: "Notification Frequency",
-//           name: "notification_frequency",
-//           options: [
-//             { id: "immediate", value: "Immediate" },
-//             { id: "daily", value: "Daily" },
-//             { id: "weekly", value: "Weekly" },
-//           ],
-//         },
-//         { view: "button", value: "Save", click: () => this.saveData() },
-//       ],
-//       rules: {},
-//     };
-//   }
-
-//   saveData() {
-//     const form = this.getRoot();
-//     if (form.validate()) {
-//       webix.message("Notification settings saved successfully");
-//     } else {
-//       webix.message({
-//         type: "error",
-//         text: "Please check the form for errors.",
-//       });
-//     }
-//   }
-// }
-
 import { JetView } from "webix-jet";
 
 export default class NotificationSettingsView extends JetView {
   config() {
     return {
       view: "form",
-      id: "notificationSettingsForm",
-      elemHeight: 500,
-      width: "auto",
+      id: "notification_settings",
       elements: [
         {
-          view: "template",
-          template: "Notification Preferences",
-          type: "section",
+          view: "label",
+          label: "Notification Channels",
+          css: "section_header",
         },
         {
-          margin: 10,
           rows: [
-            // Email Notification Section
             {
-              view: "fieldset",
+              view: "switch",
+              id: "email_notifications",
+              name: "email_notifications",
               label: "Email Notifications",
-              body: {
-                rows: [
-                  {
-                    view: "checkbox",
-                    labelRight: "Enable Email Notifications",
-                    name: "emailNotificationsEnabled",
-                    id: "emailNotificationsEnabled",
-                    value: true,
-                  },
-                  {
-                    view: "label",
-                    label: "Notification Frequency",
-                    align: "left",
-                  },
-                  {
-                    view: "radio",
-                    id: "emailNotificationFrequency",
-                    name: "emailNotificationFrequency",
-                    vertical: true,
-                    options: [
-                      { id: "immediate", value: "Immediately" },
-                      { id: "daily", value: "Daily Digest" },
-                      { id: "weekly", value: "Weekly Summary" },
-                      { id: "never", value: "Never" },
-                    ],
-                    value: "daily",
-                  },
-                ],
-              },
+              value: 1,
             },
-            { height: 10 }, // Spacer
-            // Push Notification Section
             {
-              view: "fieldset",
+              view: "switch",
+              id: "push_notifications",
+              name: "push_notifications",
               label: "Push Notifications",
-              body: {
-                rows: [
-                  {
-                    view: "checkbox",
-                    labelRight: "Enable Push Notifications",
-                    name: "pushNotificationsEnabled",
-                    id: "pushNotificationsEnabled",
-                    value: true,
-                  },
-                  {
-                    view: "label",
-                    label: "Notification Categories",
-                    align: "left",
-                  },
-                  {
-                    view: "multiselect",
-                    id: "pushNotificationCategories",
-                    name: "pushNotificationCategories",
-                    placeholder: "Select notification types",
-                    options: [
-                      { id: "account", value: "Account Activity" },
-                      { id: "updates", value: "Product Updates" },
-                      { id: "promotions", value: "Promotions" },
-                      { id: "security", value: "Security Alerts" },
-                    ],
-                  },
-                  {
-                    view: "label",
-                    label: "Notification Frequency",
-                    align: "left",
-                  },
-                  {
-                    view: "radio",
-                    id: "pushNotificationFrequency",
-                    name: "pushNotificationFrequency",
-                    vertical: true,
-                    options: [
-                      { id: "realtime", value: "Real-time" },
-                      { id: "hourly", value: "Hourly" },
-                      { id: "daily", value: "Daily" },
-                      { id: "never", value: "Never" },
-                    ],
-                    value: "hourly",
-                  },
-                ],
-              },
+              value: 1,
             },
             {
-              margin: 10,
-              cols: [
-                {
-                  view: "button",
-                  value: "Save Notification Preferences",
-                  css: "webix_primary",
-                  click: () => this.saveNotificationSettings(),
-                },
-                {
-                  view: "button",
-                  value: "Reset",
-                  css: "webix_secondary",
-                  click: () => this.resetForm(),
-                },
-              ],
+              view: "switch",
+              id: "sms_notifications",
+              name: "sms_notifications",
+              label: "SMS Notifications",
+              value: 0,
             },
           ],
         },
+        {
+          view: "label",
+          label: "Notification Frequency",
+          css: "section_header",
+        },
+        {
+          view: "radio",
+          id: "notification_frequency",
+          name: "notification_frequency",
+          value: "instantly",
+          options: [
+            { id: "instantly", value: "Instantly" },
+            { id: "daily", value: "Daily Summary" },
+            { id: "weekly", value: "Weekly Summary" },
+          ],
+        },
+        {
+          view: "label",
+          label: "Event-Based Preferences",
+          css: "section_header",
+        },
+        {
+          view: "checkbox",
+          id: "marketing_emails",
+          name: "marketing_emails",
+          labelRight: "Marketing Emails (Promotions & Announcements)",
+        },
+        {
+          view: "checkbox",
+          id: "security_alerts",
+          name: "security_alerts",
+          labelRight:
+            "Security Alerts (Login from new device, password change)",
+        },
+        {
+          view: "checkbox",
+          id: "activity_alerts",
+          name: "activity_alerts",
+          labelRight: "Activity Alerts (Mentions, Messages, Friend Requests)",
+        },
+        {
+          view: "button",
+          value: "Save Notification Preferences",
+          click: () => this.saveNotificationSettings(),
+        },
       ],
+      rules: {
+        email_notifications: this.validateNotificationChannels,
+      },
     };
   }
 
   init() {
-    // Load initial notification settings
-    this.loadNotificationSettings();
+    // Add event listeners for notification toggles
+    const notificationToggles = [
+      "email_notifications",
+      "push_notifications",
+      "sms_notifications",
+    ];
+
+    notificationToggles.forEach((toggle) => {
+      $$(toggle).attachEvent("onChange", () =>
+        this.validateNotificationChannels()
+      );
+    });
   }
 
-  loadNotificationSettings() {
-    // Simulated data loading - replace with actual API call
-    const notificationSettings = {
-      emailNotificationsEnabled: true,
-      emailNotificationFrequency: "daily",
-      pushNotificationsEnabled: true,
-      pushNotificationFrequency: "hourly",
-      pushNotificationCategories: ["account", "security"],
-    };
+  validateNotificationChannels() {
+    const emailToggle = $$("email_notifications").getValue();
+    const pushToggle = $$("push_notifications").getValue();
+    const smsToggle = $$("sms_notifications").getValue();
 
-    $$("notificationSettingsForm").setValues(notificationSettings);
+    // Check if all toggles are off
+    if (!(emailToggle || pushToggle || smsToggle)) {
+      webix.message({
+        type: "error",
+        text: "At least one notification channel must be active!",
+      });
+
+      // Revert the last toggle to on
+      $$("email_notifications").setValue(1);
+      return false;
+    }
+    return true;
   }
 
   saveNotificationSettings() {
-    const form = $$("notificationSettingsForm");
-    const formData = form.getValues();
+    if (!this.validateNotificationChannels()) return;
 
-    // Additional validation if needed
-    if (
-      !formData.emailNotificationsEnabled &&
-      !formData.pushNotificationsEnabled
-    ) {
-      webix.message({
-        type: "error",
-        text: "At least one notification type must be enabled",
-      });
-      return;
-    }
+    const settings = {
+      emailNotifications: $$("email_notifications").getValue(),
+      pushNotifications: $$("push_notifications").getValue(),
+      smsNotifications: $$("sms_notifications").getValue(),
+      frequency: $$("notification_frequency").getValue(),
+      marketingEmails: $$("marketing_emails").getValue(),
+      securityAlerts: $$("security_alerts").getValue(),
+      activityAlerts: $$("activity_alerts").getValue(),
+    };
 
-    // Simulated save process - replace with actual API call
-    try {
-      console.log("Saving notification settings:", formData);
+    // Simulate sending a push notification
+    this.sendNotificationPreviewPush(settings);
 
-      webix.message({
-        type: "success",
-        text: "Notification preferences updated successfully!",
-      });
-    } catch (error) {
-      webix.message({
-        type: "error",
-        text: "Failed to update notification settings",
-      });
-    }
+    // Here you would typically send the settings to your backend
+    webix.message({
+      type: "success",
+      text: "Notification preferences saved successfully!",
+    });
   }
 
-  resetForm() {
-    // Reload original notification settings
-    this.loadNotificationSettings();
-
+  sendNotificationPreviewPush(settings) {
+    // Simulated push notification
     webix.message({
       type: "info",
-      text: "Notification settings reset to original values",
+      text:
+        "Notification Settings Updated:\n" +
+        `Email: ${settings.emailNotifications ? "ON" : "OFF"}\n` +
+        `Push: ${settings.pushNotifications ? "ON" : "OFF"}\n` +
+        `SMS: ${settings.smsNotifications ? "ON" : "OFF"}\n` +
+        `Frequency: ${settings.frequency}`,
     });
   }
 }
