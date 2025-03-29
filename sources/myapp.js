@@ -17,7 +17,7 @@ export default class MyApp extends JetApp {
       version: import.meta.env.VITE_VERSION,
       router: import.meta.env.VITE_BUILD_AS_MODULE ? EmptyRouter : HashRouter,
       debug: !import.meta.env.PROD,
-      start: "/top",
+      start: "/home",
       // set custom view loader, mandatory
       views,
     };
@@ -33,5 +33,9 @@ export default class MyApp extends JetApp {
 }
 
 if (!import.meta.env.VITE_BUILD_AS_MODULE) {
-  webix.ready(() => new MyApp().render());
+  webix.ready(() => {
+    const app = new MyApp();
+    window.app = app; // ⬅️ Set it globally
+    app.render();
+  });
 }

@@ -3,142 +3,179 @@ import { JetView } from "webix-jet";
 export default class NotificationSettingsView extends JetView {
   config() {
     return {
-      view: "form",
-      id: "notification_settings",
-      elements: [
-        {
-          view: "fieldset",
-          label: "Notification Channels",
-          css: "section_header",
+      view: "scrollview",
+      scroll: "y",
+      body: {
+        view: "form",
+        id: "notification_settings",
+        elements: [
+          {
+            view: "fieldset",
+            label: "Notification Channels",
+            css: "section_header",
 
-          body: {
-            rows: [
-              {
-                view: "switch",
-                id: "email_notifications",
-                name: "email_notifications",
-                label: "Email Notifications",
-                value: 1,
-              },
-              {
-                view: "switch",
-                id: "push_notifications",
-                name: "push_notifications",
-                label: "Push Notifications",
-                value: 1,
-              },
-              {
-                view: "switch",
-                id: "sms_notifications",
-                name: "sms_notifications",
-                label: "SMS Notifications",
-                value: 0,
-              },
-            ],
+            body: {
+              rows: [
+                {
+                  view: "switch",
+                  id: "email_notifications",
+                  name: "email_notifications",
+                  label: "Email Notifications",
+                  tooltip: "Receive notifications via email",
+                  value: 1,
+                },
+                {
+                  view: "switch",
+                  id: "push_notifications",
+                  name: "push_notifications",
+                  label: "Push Notifications",
+                  tooltip: "Receive push notifications on your device",
+                  value: 1,
+                },
+                {
+                  view: "switch",
+                  id: "sms_notifications",
+                  name: "sms_notifications",
+                  label: "SMS Notifications",
+                  tooltip: "Receive notifications via text message",
+                  value: 0,
+                },
+              ],
+            },
           },
-        },
-        {
-          view: "fieldset",
-          label: "Notification Frequency",
-          css: "section_header",
-          body: {
-            view: "radio",
-            id: "notification_frequency",
-            name: "notification_frequency",
-            value: "instantly",
-            options: [
-              { id: "instantly", value: "Instantly" },
-              { id: "daily", value: "Daily Summary" },
-              { id: "weekly", value: "Weekly Summary" },
-            ],
-          },
-        },
-        {
-          view: "fieldset",
-          label: "Event-Based Preferences",
-          css: "section_header",
-          body: {
-            rows: [
-              {
-                view: "checkbox",
-                id: "marketing_emails",
-                name: "marketing_emails",
-                labelRight: "Marketing Emails (Promotions & Announcements)",
-              },
-              {
-                view: "checkbox",
-                id: "security_alerts",
-                name: "security_alerts",
-                labelRight:
-                  "Security Alerts (Login from new device, password change)",
-              },
-              {
-                view: "checkbox",
-                id: "activity_alerts",
-                name: "activity_alerts",
-                labelRight:
-                  "Activity Alerts (Mentions, Messages, Friend Requests)",
-              },
-            ],
-          },
-        },
-        {
-          view: "fieldset",
-          label: "Sound Settings",
-          body: {
-            rows: [
-              {
-                cols: [
-                  {
-                    view: "combo",
-                    label: "Notification Sound",
-                    name: "notification_sound",
-                    // labelWidth: 150,
-                    // width: 300,
-                    options: [
-                      { id: "default", value: "Default" },
-                      { id: "chime", value: "Chime" },
-                      { id: "beep", value: "Beep" },
-                      { id: "silent", value: "Silent" },
-                    ],
-                    tabFocus: true,
-                    tooltip: "Choose your notification sound",
-                  },
-                  {
-                    view: "button",
-                    type: "icon",
-                    icon: "mdi mdi-play",
-                    width: 40,
-                    click: "playTone",
-                    tabFocus: true,
-                    tooltip: "Play notification tone sample",
-                    hotkey: "alt+1",
-                    css: "play-button",
-                  },
-                ],
-              },
-              {
-                view: "switch",
-                label: "Sound Mode",
-                name: "sound_mode",
-                // labelWidth: 150,
-                onLabel: "Mute",
-                offLabel: "Unmute",
+          {
+            view: "fieldset",
+            label: "Notification Frequency",
+            css: "section_header",
+            body: {
+              view: "radio",
+              id: "notification_frequency",
+              name: "notification_frequency",
+              value: "instantly",
 
-                tabFocus: true,
-                tooltip: "Configure sound mode",
+              options: [
+                {
+                  id: "instantly",
+                  value: "Instantly",
+                },
+                {
+                  id: "daily",
+                  value: "Daily Summary",
+                },
+                {
+                  id: "weekly",
+                  value: "Weekly Summary",
+                },
+              ],
+            },
+          },
+          {
+            view: "fieldset",
+            label: "Event-Based Preferences",
+            css: "section_header",
+            body: {
+              rows: [
+                {
+                  view: "checkbox",
+                  id: "marketing_emails",
+                  name: "marketing_emails",
+                  labelRight: "Marketing Emails (Promotions & Announcements)",
+                },
+                {
+                  view: "checkbox",
+                  id: "security_alerts",
+                  name: "security_alerts",
+                  labelRight:
+                    "Security Alerts (Login from new device, password change)",
+                },
+                {
+                  view: "checkbox",
+                  id: "activity_alerts",
+                  name: "activity_alerts",
+                  labelRight:
+                    "Activity Alerts (Mentions, Messages, Friend Requests)",
+                },
+              ],
+            },
+          },
+          {
+            view: "fieldset",
+            label: "Sound Settings",
+            body: {
+              rows: [
+                {
+                  cols: [
+                    {
+                      view: "combo",
+                      label: "Notification Sound",
+                      name: "notification_sound",
+                      // labelWidth: 150,
+                      // width: 300,
+                      options: [
+                        { id: "default", value: "Default" },
+                        { id: "chime", value: "Chime" },
+                        { id: "beep", value: "Beep" },
+                        { id: "silent", value: "Silent" },
+                      ],
+                      tabFocus: true,
+                      tooltip: "Choose your notification sound",
+                    },
+                    {
+                      view: "button",
+                      type: "icon",
+                      icon: "mdi mdi-play",
+                      width: 40,
+                      click: "playTone",
+                      tabFocus: true,
+                      tooltip: "Play notification tone sample",
+                      hotkey: "alt+1",
+                      css: "play-button",
+                    },
+                  ],
+                },
+                {
+                  view: "switch",
+                  label: "Sound Mode",
+                  name: "sound_mode",
+                  // labelWidth: 150,
+                  onLabel: "Mute",
+                  offLabel: "Unmute",
+
+                  tabFocus: true,
+                  tooltip: "Configure sound mode",
+                },
+              ],
+            },
+          },
+          // Save Button
+
+          {
+            margin: 10,
+            cols: [
+              { width: 150 }, // Spacer
+              {
+                view: "button",
+                value: "Save Notification Preferences",
+                css: "webix_primary",
+                click: () => this.saveNotificationSettings(),
+              },
+              {
+                view: "button",
+                value: "Reset to Defaults",
+                css: "webix_secondary",
+                click: () => this.saveNotificationSettings(),
               },
             ],
           },
+          // {
+          //   view: "button",
+          //   value: "Save Notification Preferences",
+          //   click: () => this.saveNotificationSettings(),
+          // },
+        ],
+        rules: {
+          email_notifications: this.validateNotificationChannels,
         },
-        {
-          view: "button",
-          value: "Save Notification Preferences",
-          click: () => this.saveNotificationSettings(),
-        },
-      ],
-      rules: {
-        email_notifications: this.validateNotificationChannels,
       },
     };
   }

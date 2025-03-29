@@ -1,7 +1,18 @@
 let isLogin = true;
 
 // let isLogin = JSON.parse(localStorage.getItem("loggedUser")) || false;
+function showView(view) {
+  if (window.app) {
+    window.app.show(`/${view}`);
+  } else {
+    console.error("App is not initialized yet.");
+  }
+}
 
+function updateNavbar() {
+  isLogin = JSON.parse(localStorage.getItem("loggedUser")) || false;
+  webix.ui(Navbar, $$("navbar").getParentView()); // Reinitialize navbar
+}
 export const Navbar = {
   id: "navbar",
   view: "toolbar",
@@ -56,7 +67,9 @@ export const Navbar = {
           width: 100,
           click: () => {
             localStorage.setItem("loggedUser", "false");
-            location.reload();
+            console.log("LOG OUT!");
+            updateNavbar();
+            showView("home");
           },
           hidden: !isLogin,
           css: "rightAlign",
