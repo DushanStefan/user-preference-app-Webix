@@ -271,7 +271,12 @@ export default class AccountSettingsView extends JetView {
                     bottomPadding: 20,
                     labelWidth: 150,
                     required: true,
-                    invalidMessage: "Username is required.",
+
+                    validate: function (value) {
+                      return this.validateUsername(value);
+                    }.bind(this),
+                    invalidMessage:
+                      "Username is required and cannot contain spaces.",
                   },
                   {
                     view: "text",
@@ -358,8 +363,12 @@ export default class AccountSettingsView extends JetView {
                 ],
                 rules: {
                   full_name: webix.rules.isNotEmpty,
+
                   username: webix.rules.isNotEmpty,
                   email: webix.rules.isEmail,
+                  username: function (value) {
+                    return this.validateUsername(value);
+                  }.bind(this),
                   mobile: function (value) {
                     return this.validateMobileNumber(value);
                   }.bind(this),
@@ -467,6 +476,11 @@ export default class AccountSettingsView extends JetView {
   //   $$("remove_profile_btn").disable();
   //   $$("countryCode").disable();
   // }
+
+  validateUsername(value) {
+    // Check if username contains any spaces
+    return value && !value.includes(" ");
+  }
 
   adjustLayout() {
     const layout = $$("mainLayout");
@@ -762,6 +776,14 @@ export default class AccountSettingsView extends JetView {
         text: "Please enter a valid mobile number.",
         type: "error",
       });
+      return;
+    }
+    if (username && username.includes(" ")) {
+      webix.message({
+        type: "error",
+        text: "Username cannot contain spaces",
+      });
+      form.markInvalid("username", "Username cannot contain spaces");
       return;
     }
 

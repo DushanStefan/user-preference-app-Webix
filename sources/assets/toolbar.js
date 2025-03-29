@@ -27,6 +27,15 @@ export const Navbar = {
       click: () => showView("home"),
       width: 40,
     },
+    {
+      view: "icon",
+      icon: "mdi mdi-cog",
+      click: () => showView("settings"),
+      hidden: !isLogin,
+      width: 40,
+      css: "rightAlign",
+      hidden: !isLogin,
+    },
 
     // Spacer for alignment
     {
@@ -38,32 +47,8 @@ export const Navbar = {
     {
       cols: [
         {
-          view: "icon",
-          icon: "mdi mdi-cog",
-          click: () => showView("settings"),
-          hidden: !isLogin,
-          width: 40,
-          css: "rightAlign",
-          hidden: !isLogin,
-        },
-        {
-          view: "switch",
-          id: "themeSwitch",
-          width: 100,
-          value: 0,
-          on: {
-            onChange: function (value) {
-              toggleTheme(value);
-            },
-          },
-          hidden: !isLogin,
-          css: "rightAlign",
-          onLabel: "<span class='webix_icon fas fa-sun'></span>",
-          offLabel: "<span class='webix_icon fas fa-moon'></span>",
-        },
-        {
           view: "button",
-          label: "LOGOUT",
+          label: "👤",
           width: 100,
           click: () => {
             localStorage.setItem("loggedUser", "false");
@@ -87,7 +72,7 @@ export const Navbar = {
       cols: [
         {
           view: "button",
-          label: "LOG IN",
+          label: "👤",
           width: 100,
           click: () => showView("login"),
           hidden: isLogin,

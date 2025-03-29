@@ -41,9 +41,9 @@ export default class TopView extends JetView {
           // Event to show message on hover
           webix.message("Hovered: " + this.getItem(id).value);
         },
-        onAfterSelect: function (id) {
-          webix.message("Selected: " + this.getItem(id).value);
-        },
+        // onAfterSelect: function (id) {
+        //   webix.message("Selected: " + this.getItem(id).value);
+        // },
       },
       width: 250, // Default width for the sidebar
       // resizable: true, // Make the sidebar resizable

@@ -93,7 +93,7 @@ export default class HomePage extends JetView {
           width: 120,
           css: "webix_primary login-button",
           click: () => {
-            this.app.show("/top");
+            this.app.show("/login");
           },
         },
         container
