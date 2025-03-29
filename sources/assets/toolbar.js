@@ -1,7 +1,18 @@
 let isLogin = true;
 
 // let isLogin = JSON.parse(localStorage.getItem("loggedUser")) || false;
+function showView(view) {
+  if (window.app) {
+    window.app.show(`/${view}`);
+  } else {
+    console.error("App is not initialized yet.");
+  }
+}
 
+function updateNavbar() {
+  isLogin = JSON.parse(localStorage.getItem("loggedUser")) || false;
+  webix.ui(Navbar, $$("navbar").getParentView()); // Reinitialize navbar
+}
 export const Navbar = {
   id: "navbar",
   view: "toolbar",
@@ -16,6 +27,15 @@ export const Navbar = {
       click: () => showView("home"),
       width: 40,
     },
+    {
+      view: "icon",
+      icon: "mdi mdi-cog",
+      click: () => showView("settings"),
+      hidden: !isLogin,
+      width: 40,
+      css: "rightAlign",
+      hidden: !isLogin,
+    },
 
     // Spacer for alignment
     {
@@ -27,36 +47,14 @@ export const Navbar = {
     {
       cols: [
         {
-          view: "icon",
-          icon: "mdi mdi-cog",
-          click: () => showView("settings"),
-          hidden: !isLogin,
-          width: 40,
-          css: "rightAlign",
-          hidden: !isLogin,
-        },
-        {
-          view: "switch",
-          id: "themeSwitch",
-          width: 100,
-          value: 0,
-          on: {
-            onChange: function (value) {
-              toggleTheme(value);
-            },
-          },
-          hidden: !isLogin,
-          css: "rightAlign",
-          onLabel: "<span class='webix_icon fas fa-sun'></span>",
-          offLabel: "<span class='webix_icon fas fa-moon'></span>",
-        },
-        {
           view: "button",
-          label: "LOGOUT",
+          label: "👤",
           width: 100,
           click: () => {
             localStorage.setItem("loggedUser", "false");
-            location.reload();
+            console.log("LOG OUT!");
+            updateNavbar();
+            showView("home");
           },
           hidden: !isLogin,
           css: "rightAlign",
@@ -74,7 +72,7 @@ export const Navbar = {
       cols: [
         {
           view: "button",
-          label: "LOG IN",
+          label: "👤",
           width: 100,
           click: () => showView("login"),
           hidden: isLogin,
