@@ -49,12 +49,7 @@ user-preferences-webix/
 │-- README.md        # Documentation
 ```
 
-## Deployment
-To deploy the project:
-```sh
-npm run build
-```
-This generates a production-ready build in the `dist/` folder.
+
 
 ## Testing
 Run tests using:
