@@ -1,14 +1,30 @@
 import { JetView } from "webix-jet";
+import { Navbar } from "../assets/toolbar";
 
 export default class LoginView extends JetView {
   config() {
     return {
-      view: "form",
-      id: "loginForm",
-      elements: [
-        { view: "text", label: "Username", name: "username" },
-        { view: "text", label: "Password", type: "password", name: "password" },
-        { view: "button", value: "Login", click: () => this.login() },
+      rows: [
+        Navbar,
+        {
+          view: "form",
+          id: "loginForm",
+          elements: [
+            { view: "text", label: "Username", name: "username" },
+            {
+              view: "text",
+              label: "Password",
+              type: "password",
+              name: "password",
+            },
+            {
+              view: "button",
+              value: "Login",
+              css: "webix_primary",
+              click: () => this.login(),
+            },
+          ],
+        },
       ],
     };
   }
@@ -25,6 +41,7 @@ export default class LoginView extends JetView {
     // Try to authenticate
     // if (auth.login(values.username, values.password)) {
     this.app.show("/top/account");
+    localStorage.setItem("loggedUser", JSON.stringify(false));
     // } else {
     //   webix.message({ type: "error", text: "Invalid credentials" });
     // }

@@ -3,7 +3,8 @@ import { Navbar } from "../assets/toolbar";
 
 export default class HomePage extends JetView {
   config() {
-    const isLogin = JSON.parse(localStorage.getItem("loggedUser")) === true;
+    //  const isLogin = JSON.parse(localStorage.getItem("loggedUser")) === true;
+    const isLogin = false;
 
     return {
       rows: [
@@ -21,50 +22,16 @@ export default class HomePage extends JetView {
           `,
         },
 
-        // Main Content Section
         {
-          cols: [
-            // Left Column: Info Section
-            {
-              view: "layout",
-              gravity: 2,
-              rows: [
-                {
-                  view: "template",
-                  height: 180,
-                  css: "info-section",
-                  template: `
-                    <div class="info-card">
-                      <h2 class="about-text">About Us</h2>
-                      <p>We provide a user-friendly experience that allows you to easily customize your settings and navigate seamlessly through the app.</p>
-                    </div>
-                  `,
-                },
-                {
-                  view: "template",
-                  height: 180,
-                  css: "info-section",
-                  template: `
-                    <div class="contact-card">
-                      <h2>Contact Us</h2>
-                      <p>If you have any questions, feel free to reach out to us!</p>
-                    </div>
-                  `,
-                },
-              ],
-            },
+          view: "layout",
 
-            // Right Column: Login Section
+          rows: [
             {
-              view: "layout",
-              gravity: 1,
-              rows: [
-                {
-                  view: "template",
-                  localId: "loginBlock",
-                  height: 350,
-                  css: "login-container",
-                  template: `
+              view: "template",
+              localId: "loginBlock",
+              height: 350,
+              css: "login-container",
+              template: `
                     <div class="login-container">
                       <p class="description">
                         Customize your experience with personalized settings for notifications, themes, and more.
@@ -72,8 +39,7 @@ export default class HomePage extends JetView {
                       <div id="loginBtnWrapper"></div>
                     </div>
                   `,
-                },
-              ],
+              hidden: isLogin,
             },
           ],
         },
