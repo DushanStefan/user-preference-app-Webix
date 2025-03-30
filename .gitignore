@@ -3,4 +3,5 @@ codebase/
 node_modules/
 *.log
 dist/
-.env
+.env 
+".env" 

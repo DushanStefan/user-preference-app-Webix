@@ -150,6 +150,28 @@ export default class ThemeSettingsView extends JetView {
   // }
 
   init() {
+    const savedColorTheme = localStorage.getItem("ColorThemeS");
+    if (savedColorTheme) {
+      this.validateAndApplyFont(savedColorTheme); // Apply saved font size
+      $$("color_theme").setValue(savedColorTheme); // Set the value of the slider
+    }
+    const savedDyslexia = localStorage.getItem("DyslexiaS");
+    if (savedDyslexia) {
+      this.validateAndApplyFont(savedDyslexia); // Apply saved font size
+      $$("dyslexia_font").setValue(savedDyslexia); // Set the value of the slider
+    }
+
+    const savedContrast = localStorage.getItem("ContrastS");
+    if (savedContrast) {
+      this.validateAndApplyFont(savedContrast); // Apply saved font size
+      $$("high_contrast").setValue(savedContrast); // Set the value of the slider
+    }
+    // Load saved font size from localStorage if available
+    const savedFontValue = localStorage.getItem("fontValueS");
+    if (savedFontValue) {
+      this.validateAndApplyFont(savedFontValue); // Apply saved font size
+      $$("font_family").setValue(savedFontValue); // Set the value of the slider
+    }
     // Load saved font size from localStorage if available
     const savedFontSize = localStorage.getItem("fontSize");
     if (savedFontSize) {
@@ -162,6 +184,7 @@ export default class ThemeSettingsView extends JetView {
   }
 
   validateAndApplyFont(fontValue) {
+    localStorage.setItem("fontValueS", fontValue);
     // Limit custom fonts to prevent performance issues
     const performanceThreshold = 3; // Max number of custom fonts
     const customFonts = ["sporty", "formal", "dyslexic"];
@@ -194,6 +217,7 @@ export default class ThemeSettingsView extends JetView {
   }
 
   applyColorTheme(theme) {
+    localStorage.setItem("ColorThemeS", theme);
     if (theme === "dark") {
       document.body.classList.add("dark-theme");
       document.body.classList.remove("light-theme");
@@ -213,6 +237,7 @@ export default class ThemeSettingsView extends JetView {
   // }
 
   toggleHighContrast(isEnabled) {
+    localStorage.setItem("ContrastS", isEnabled); // Save for future sessions
     if (isEnabled) {
       document.body.classList.add("high-contrast");
     } else {
@@ -221,6 +246,7 @@ export default class ThemeSettingsView extends JetView {
   }
 
   toggleDyslexiaFont(isEnabled) {
+    localStorage.setItem("DyslexiaS", isEnabled);
     if (isEnabled) {
       // Automatically select dyslexia-friendly font
       $$("font_family").setValue("dyslexic");

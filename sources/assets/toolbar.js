@@ -47,9 +47,11 @@ export const Navbar = {
     {
       cols: [
         {
-          view: "button",
-          label: "👤",
-          width: 100,
+          view: "icon",
+          icon: "wxi-user",
+          height: 32, // Set the container height
+          width: 32,
+
           click: () => {
             localStorage.setItem("loggedUser", "false");
             console.log("LOG OUT!");
@@ -57,7 +59,7 @@ export const Navbar = {
             showView("home");
           },
           hidden: !isLogin,
-          css: "rightAlign",
+          // css: "rightAlign",
           responsive: {
             "screen-xxs": { width: 80, height: 32 }, // Smaller size for very small screens
             "screen-s": { width: 100, height: 40 }, // Slightly larger on small screens
