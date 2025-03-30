@@ -4,7 +4,7 @@ This project is a **User Preferences Page** built using the **Webix framework**.
 
 ## Features
 - **Preference Categories:**
-  - **Account Settings**: Manage username, email, and password.
+  - **Account Settings**: Manage username, email, and password..
   - **Notification Settings**: Control email and push notifications.
   - **Theme Settings**: Customize colors, fonts, and layout.
   - **Privacy Settings**: Manage profile visibility and data sharing.
