@@ -100,22 +100,10 @@ export default class PrivacySettingsView extends JetView {
               view: "button",
               value: "Reset to default",
               css: "webix_secondary",
-              click: () => this.cancelPersonalInfo(),
+              click: () => this.cancelPrivacyInfo(),
             },
           ],
         },
-        // {
-        //   view: "button",
-        //   value: "Save Privacy Settings",
-        //   css: "webix_primary",
-        //   click: () => this.savePrivacySettings(),
-        // },
-        // {
-        //   view: "button",
-        //   value: "Save Privacy Settings",
-        //   css: "webix_primary",
-        //   click: () => this.savePrivacySettings(),
-        // },
       ],
     };
   }
@@ -140,25 +128,30 @@ export default class PrivacySettingsView extends JetView {
     const form = this.getRoot();
     const formData = form.getValues();
 
+    webix.message({
+      type: "success",
+      text: "Privacy settings updated successfully",
+    });
+
     // Simulate save process - replace with actual API call
-    webix
-      .ajax()
-      .post("/api/privacy/update", formData)
-      .then(() => {
-        webix.message({
-          type: "success",
-          text: "Privacy settings updated successfully",
-        });
-      })
-      .fail(() => {
-        webix.message({
-          type: "error",
-          text: "Failed to update privacy settings",
-        });
-      });
+    // webix
+    //   .ajax()
+    //   .post("/api/privacy/update", formData)
+    //   .then(() => {
+    //     webix.message({
+    //       type: "success",
+    //       text: "Privacy settings updated successfully",
+    //     });
+    //   })
+    //   .fail(() => {
+    //     webix.message({
+    //       type: "error",
+    //       text: "Failed to update privacy settings",
+    //     });
+    //   });
   }
 
-  cancelPersonalInfo() {
+  cancelPrivacyInfo() {
     if (result) {
       // Reset profile picture settings
       $$("profile-picture-settings").setValues({
@@ -198,23 +191,28 @@ export default class PrivacySettingsView extends JetView {
       title: "Request Personal Data",
       text: "Are you sure you want to request a copy of your personal data?",
       callback: (result) => {
-        if (result) {
-          webix
-            .ajax()
-            .post("/api/privacy/request-data")
-            .then(() => {
-              webix.message({
-                type: "success",
-                text: "Your personal data request has been submitted. We'll process it soon.",
-              });
-            })
-            .fail(() => {
-              webix.message({
-                type: "error",
-                text: "Failed to submit data request. Please try again.",
-              });
-            });
-        }
+        webix.message({
+          type: "success",
+          text: "Your personal data request has been submitted. We'll process it soon.",
+        });
+
+        // if (result) {
+        //   webix
+        //     .ajax()
+        //     .post("/api/privacy/request-data")
+        //     .then(() => {
+        //       webix.message({
+        //         type: "success",
+        //         text: "Your personal data request has been submitted. We'll process it soon.",
+        //       });
+        //     })
+        //     .fail(() => {
+        //       webix.message({
+        //         type: "error",
+        //         text: "Failed to submit data request. Please try again.",
+        //       });
+        //     });
+        // }
       },
     });
   }
@@ -225,23 +223,27 @@ export default class PrivacySettingsView extends JetView {
       title: "Account Deletion",
       text: "Are you absolutely sure you want to request account deletion? This action cannot be undone.",
       callback: (result) => {
-        if (result) {
-          webix
-            .ajax()
-            .post("/api/privacy/request-deletion")
-            .then(() => {
-              webix.message({
-                type: "success",
-                text: "Your account deletion request has been submitted.",
-              });
-            })
-            .fail(() => {
-              webix.message({
-                type: "error",
-                text: "Failed to submit deletion request. Please try again.",
-              });
-            });
-        }
+        webix.message({
+          type: "success",
+          text: "Your account deletion request has been submitted.",
+        });
+        // if (result) {
+        //   webix
+        //     .ajax()
+        //     .post("/api/privacy/request-deletion")
+        //     .then(() => {
+        //       webix.message({
+        //         type: "success",
+        //         text: "Your account deletion request has been submitted.",
+        //       });
+        //     })
+        //     .fail(() => {
+        //       webix.message({
+        //         type: "error",
+        //         text: "Failed to submit deletion request. Please try again.",
+        //       });
+        //     });
+        // }
       },
     });
   }
