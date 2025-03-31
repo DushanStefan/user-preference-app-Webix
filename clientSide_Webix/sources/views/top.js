@@ -84,19 +84,6 @@ export default class TopView extends JetView {
     this.adjustSidebar();
   }
 
-  // adjustSidebar() {
-  //   // const sidebar = $$("$sidebar1");
-  //   const sidebar = this.getRoot().queryView({ id: "$sidebar1" });
-  //   const windowWidth = window.innerWidth;
-
-  //   // If screen width is less than 768px, hide sidebar by default
-  //   if (windowWidth < 768) {
-  //     sidebar.hide();
-  //   } else {
-  //     sidebar.show();
-  //   }
-  // }
-
   adjustSidebar() {
     const sidebar = this.getRoot().queryView({ id: "$sidebar1" });
     if (!sidebar) return;
@@ -106,4 +93,3 @@ export default class TopView extends JetView {
     windowWidth < 750 ? sidebar.collapse() : sidebar.expand();
   }
 }
-

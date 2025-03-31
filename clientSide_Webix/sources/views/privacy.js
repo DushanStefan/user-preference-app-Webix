@@ -227,6 +227,9 @@ export default class PrivacySettingsView extends JetView {
           type: "success",
           text: "Your account deletion request has been submitted.",
         });
+        localStorage.removeItem("loggedUser");
+        this.app.show("/home");
+
         // if (result) {
         //   webix
         //     .ajax()
