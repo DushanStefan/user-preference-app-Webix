@@ -1,5 +1,5 @@
 import { JetView } from "webix-jet";
-import { Navbar } from "../assets/toolbar";
+import { Navbar } from "./toolbar";
 
 export default class HelpPage extends JetView {
   config() {

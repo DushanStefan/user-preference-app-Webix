@@ -2,6 +2,12 @@ import { JetView } from "webix-jet";
 
 export default class AccountSettingsView extends JetView {
   config() {
+    const storedUser = JSON.parse(localStorage.getItem("loggedUser")) || "";
+    const storedEmail = JSON.parse(localStorage.getItem("loggedEmail")) || "";
+    const storedFullname =
+      JSON.parse(localStorage.getItem("loggedFullname")) || "";
+    console.log(storedUser, storedEmail, storedFullname);
+
     return {
       view: "form",
       id: "account_settings_form",
@@ -17,7 +23,11 @@ export default class AccountSettingsView extends JetView {
           cells: [
             {
               header: "Personal Info",
-              body: this._personalInfoTab(),
+              body: this._personalInfoTab(
+                storedUser,
+                storedEmail,
+                storedFullname
+              ),
             },
             {
               header: "Security",
@@ -34,170 +44,7 @@ export default class AccountSettingsView extends JetView {
     };
   }
 
-  // _personalInfoTab() {
-  //   return {
-  //     rows: [
-  //       {
-  //         cols: [
-  //           // Profile Picture Section
-  //           {
-  //             rows: [
-  //               {
-  //                 view: "template",
-  //                 template: "Profile Picture",
-  //                 type: "section",
-  //               },
-  //               {
-  //                 view: "template",
-  //                 id: "profile_pic_preview",
-  //                 height: 200,
-  //                 template: (obj) => `
-  //                   <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-  //                     <img src="${obj.profile_pic || this.getDefaultAvatar()}"
-  //                          style="max-width: 200px; max-height: 200px; border-radius: 50%; object-fit: cover;"/>
-  //                   </div>
-  //                 `,
-  //               },
-  //               {
-  //                 view: "uploader",
-  //                 id: "profile_pic_uploader",
-  //                 value: "Upload Picture",
-  //                 accept: "image/jpeg,image/png,image/webp",
-  //                 multiple: false,
-  //                 upload: "/upload/profile",
-  //                 on: {
-  //                   onBeforeFileAdd: (file) =>
-  //                     this._handleProfilePicUpload(file),
-  //                 },
-  //               },
-  //               {
-  //                 view: "button",
-  //                 value: "Remove Profile Photo",
-  //                 css: "webix_danger",
-  //                 click: () => this.removeProfilePhoto(),
-  //               },
-  //             ],
-  //             width: 250,
-  //             padding: { right: 20 },
-  //           },
-  //           { width: 20 },
-  //           // Personal Details Section
-
-  //           {
-  //             id: "userForm",
-  //             rows: [
-  //               {
-  //                 view: "text",
-  //                 label: "Full Name",
-  //                 name: "full_name",
-  //                 placeholder: "Enter full name",
-  //                 bottomPadding: 20,
-  //                 labelWidth: 150,
-  //               },
-  //               {
-  //                 view: "text",
-  //                 label: "Username",
-  //                 name: "username",
-  //                 placeholder: "Choose a username",
-  //                 bottomPadding: 20,
-  //                 labelWidth: 150,
-  //               },
-  //               {
-  //                 view: "text",
-  //                 label: "Email",
-  //                 name: "email",
-  //                 placeholder: "Enter email address",
-  //                 bottomPadding: 20,
-  //                 labelWidth: 150,
-  //                 validate: webix.rules.isEmail,
-  //                 invalidMessage: "Please enter a valid email address.",
-  //               },
-  //               {
-  //                 view: "combo",
-  //                 label: "Country Code",
-  //                 id: "countryCode",
-  //                 options: [
-  //                   { id: "+1", value: "USA (+1)" },
-  //                   { id: "+44", value: "UK (+44)" },
-  //                   { id: "+91", value: "India (+91)" },
-  //                   // Add more country codes as needed
-  //                 ],
-  //                 value: "+1", // Default country code
-  //                 required: true,
-  //               },
-  //               {
-  //                 view: "text",
-  //                 label: "Mobile Number",
-  //                 id: "mobileNumber",
-  //                 name: "mobile",
-  //                 placeholder: "Enter mobile number",
-  //                 required: true,
-  //                 invalidMessage: "Please enter a valid mobile number.",
-  //                 validate: function (value) {
-  //                   const countryCode = $$("countryCode").getValue();
-  //                   let minLength = 10; // Default min length
-  //                   let maxLength = 10; // Default max length
-
-  //                   // Adjust lengths based on the country code
-  //                   if (countryCode === "+1") {
-  //                     minLength = maxLength = 10; // USA
-  //                   } else if (countryCode === "+44") {
-  //                     minLength = maxLength = 10; // UK
-  //                   } else if (countryCode === "+91") {
-  //                     minLength = 10; // India
-  //                     maxLength = 10;
-  //                   }
-
-  //                   // Check length
-  //                   if (value.length < minLength || value.length > maxLength) {
-  //                     return false;
-  //                   }
-  //                   return true;
-  //                 },
-  //               },
-  //               {
-  //                 view: "datepicker",
-  //                 label: "Date of Birth",
-  //                 name: "dob",
-  //                 format: "%Y-%m-%d",
-  //                 bottomPadding: 20,
-  //                 labelWidth: 150,
-  //               },
-  //               {
-  //                 view: "textarea",
-  //                 label: "Bio",
-  //                 name: "bio",
-  //                 height: 100,
-  //                 placeholder: "Tell us about yourself",
-  //                 bottomPadding: 20,
-  //                 labelWidth: 150,
-  //               },
-  //             ],
-  //           },
-  //         ],
-  //       },
-  //       {
-  //         margin: 10,
-  //         cols: [
-  //           { width: 150 }, // Spacer
-  //           {
-  //             view: "button",
-  //             value: "Save Personal Info",
-  //             css: "webix_primary",
-  //             click: () => this.savePersonalInfo(),
-  //           },
-  //           {
-  //             view: "button",
-  //             value: "Cancel",
-  //             css: "webix_secondary",
-  //             click: () => this.cancelPersonalInfo(),
-  //           },
-  //         ],
-  //       },
-  //     ],
-  //   };
-  // }
-  _personalInfoTab() {
+  _personalInfoTab(storedUser, storedEmail, storedFullname) {
     return {
       view: "scrollview",
       scroll: "y",
@@ -261,6 +108,7 @@ export default class AccountSettingsView extends JetView {
                     bottomPadding: 20,
                     labelWidth: 150,
                     required: true,
+                    value: storedFullname || "no  name",
                     invalidMessage: "Full Name is required.",
                   },
                   {
@@ -271,12 +119,13 @@ export default class AccountSettingsView extends JetView {
                     bottomPadding: 20,
                     labelWidth: 150,
                     required: true,
+                    value: storedUser || "no username",
 
                     validate: function (value) {
                       return this.validateUsername(value);
                     }.bind(this),
                     invalidMessage:
-                      "Username is required and cannot contain spaces.",
+                      "Username is required , cannot contain spaces and minimum length is 3.",
                   },
                   {
                     view: "text",
@@ -287,6 +136,7 @@ export default class AccountSettingsView extends JetView {
                     labelWidth: 150,
                     validate: webix.rules.isEmail,
                     required: true,
+                    value: storedEmail || "noemail@example.com", // Set the value explicitly here
                     invalidMessage: "Please enter a valid email address.",
                   },
                   {
@@ -479,7 +329,7 @@ export default class AccountSettingsView extends JetView {
 
   validateUsername(value) {
     // Check if username contains any spaces
-    return value && !value.includes(" ");
+    return value && !value.includes(" ") && value.length >= 3;
   }
 
   adjustLayout() {

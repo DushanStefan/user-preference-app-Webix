@@ -1,9 +1,9 @@
 import { JetView } from "webix-jet";
-import { Navbar } from "../assets/toolbar";
+import { Navbar } from "./toolbar";
 
 export default class AboutUs extends JetView {
   config() {
-    const isLogin = JSON.parse(localStorage.getItem("loggedUser")) === true;
+    // const isLogin = JSON.parse(localStorage.getItem("loggedUser")) === true;
 
     return {
       rows: [

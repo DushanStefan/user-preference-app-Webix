@@ -1,10 +1,20 @@
 import { JetView } from "webix-jet";
-import { Navbar } from "../assets/toolbar";
+import { Navbar } from "./toolbar";
 
 export default class HomePage extends JetView {
   config() {
-    //  const isLogin = JSON.parse(localStorage.getItem("loggedUser")) === true;
-    const isLogin = false;
+    // localStorage.removeItem("loggedUser");
+    let isLogin = JSON.parse(localStorage.getItem("loggedUser")) === true;
+    // const isLogin = false;
+
+    // const isLogin =
+    //   JSON.parse(localStorage.getItem("loggedUser")) === true || false;
+
+    // localStorage.setItem("loggedUser", JSON.stringify(true));
+    // if (isLogin == false) {
+    //   console.log(1234);
+    // }
+    // console.log(1234);
 
     return {
       rows: [
