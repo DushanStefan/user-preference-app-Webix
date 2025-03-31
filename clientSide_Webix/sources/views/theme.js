@@ -137,19 +137,12 @@ export default class ThemeSettingsView extends JetView {
             },
           ],
         },
-        // {
-        //   view: "button",
-        //   value: "Save Theme Preferences",
-        //   click: () => this.saveThemeSettings(),
-        // },
+       
       ],
     };
   }
 
-  // init() {
-  //   // Initial theme application
-  //   this.applyColorTheme($$("color_theme").getValue());
-  // }
+  
 
   init() {
     const savedColorTheme = localStorage.getItem("ColorThemeS");

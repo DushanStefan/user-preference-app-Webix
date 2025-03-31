@@ -173,11 +173,7 @@ export default class NotificationSettingsView extends JetView {
               },
             ],
           },
-          // {
-          //   view: "button",
-          //   value: "Save Notification Preferences",
-          //   click: () => this.saveNotificationSettings(),
-          // },
+          
         ],
         rules: {
           email_notifications: this.validateNotificationChannels,

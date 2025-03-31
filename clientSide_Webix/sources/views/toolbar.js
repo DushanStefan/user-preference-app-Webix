@@ -12,10 +12,7 @@ function showView(view) {
   }
 }
 
-// function updateNavbar() {
-//   isLogin = JSON.parse(localStorage.getItem("loggedUser")) || false;
-//   webix.ui(Navbar, $$("navbar").getParentView()); // Reinitialize navbar
-// }
+
 
 const moreOptionsMenu = {
   view: "contextmenu",
@@ -48,7 +45,7 @@ const moreOptionsMenu = {
           break;
 
         case "logOut":
-          localStorage.removeItem("loggedUser");
+          localStorage.clear(); // This clears all localStorage data
           if (window.updateNavbar) {
             window.updateNavbar(); // Ensure navbar updates
           }
@@ -98,13 +95,7 @@ export const Navbar = {
   css: "navContainer",
   responsive: true,
   cols: [
-    // Home Icon
-    // {
-    //   view: "icon",
-    //   icon: "mdi mdi-home",
-    //   click: () => showView("home"),
-    //   width: 40,
-    // },
+   
     {
       view: "spacer",
       fillspace: true,
@@ -119,12 +110,7 @@ export const Navbar = {
           height: 32, // Set the container height
           width: 32,
 
-          // click: () => {
-          //   localStorage.setItem("loggedUser", "false");
-          //   console.log("LOG OUT!");
-          //   updateNavbar();
-          //   showView("home");
-          // },
+          
           hidden: !isLogin,
           css: "rightAlign",
           responsive: {
@@ -133,15 +119,7 @@ export const Navbar = {
             "screen-m": { width: 150, height: 56 }, // Default size for larger screens
           },
         },
-        // {
-        //   view: "icon",
-        //   icon: "mdi mdi-dots-vertical",
-        //   click: () => showView("top"),
-        //   hidden: !isLogin,
-        //   width: 40,
-        //   css: "rightAlign",
-        //   hidden: !isLogin,
-        // },
+        
         {
           view: "icon",
           id: "more_options_button",
@@ -176,21 +154,7 @@ export const Navbar = {
           hidden: isLogin,
           css: "reduceSpacing",
         },
-        // {
-        //   view: "switch",
-        //   id: "themeSwitchPublic",
-        //   width: 100,
-        //   value: 0,
-        //   onLabel: "<span class='webix_icon fas fa-sun'></span>",
-        //   offLabel: "<span class='webix_icon fas fa-moon'></span>",
-        //   on: {
-        //     onChange: function (value) {
-        //       toggleTheme(value);
-        //     },
-        //   },
-        //   hidden: isLogin,
-        //   css: "reduceSpacing",
-        // },
+        
         {
           view: "icon",
           id: "more_options_buttonO",

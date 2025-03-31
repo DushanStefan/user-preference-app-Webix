@@ -3,10 +3,7 @@ import { JetView } from "webix-jet";
 export default class PrivacySettingsView extends JetView {
   config() {
     return {
-      // view: "scrollview",
-      // scroll: "y",
-      // body: {
-      //   rows: [
+      
       view: "form",
       id: "privacySettingsForm",
       elements: [
@@ -133,22 +130,7 @@ export default class PrivacySettingsView extends JetView {
       text: "Privacy settings updated successfully",
     });
 
-    // Simulate save process - replace with actual API call
-    // webix
-    //   .ajax()
-    //   .post("/api/privacy/update", formData)
-    //   .then(() => {
-    //     webix.message({
-    //       type: "success",
-    //       text: "Privacy settings updated successfully",
-    //     });
-    //   })
-    //   .fail(() => {
-    //     webix.message({
-    //       type: "error",
-    //       text: "Failed to update privacy settings",
-    //     });
-    //   });
+   
   }
 
   cancelPrivacyInfo() {
@@ -196,23 +178,7 @@ export default class PrivacySettingsView extends JetView {
           text: "Your personal data request has been submitted. We'll process it soon.",
         });
 
-        // if (result) {
-        //   webix
-        //     .ajax()
-        //     .post("/api/privacy/request-data")
-        //     .then(() => {
-        //       webix.message({
-        //         type: "success",
-        //         text: "Your personal data request has been submitted. We'll process it soon.",
-        //       });
-        //     })
-        //     .fail(() => {
-        //       webix.message({
-        //         type: "error",
-        //         text: "Failed to submit data request. Please try again.",
-        //       });
-        //     });
-        // }
+        
       },
     });
   }
@@ -227,26 +193,10 @@ export default class PrivacySettingsView extends JetView {
           type: "success",
           text: "Your account deletion request has been submitted.",
         });
-        localStorage.removeItem("loggedUser");
+        localStorage.clear(); // This clears all localStorage data
         this.app.show("/home");
 
-        // if (result) {
-        //   webix
-        //     .ajax()
-        //     .post("/api/privacy/request-deletion")
-        //     .then(() => {
-        //       webix.message({
-        //         type: "success",
-        //         text: "Your account deletion request has been submitted.",
-        //       });
-        //     })
-        //     .fail(() => {
-        //       webix.message({
-        //         type: "error",
-        //         text: "Failed to submit deletion request. Please try again.",
-        //       });
-        //     });
-        // }
+        
       },
     });
   }
