@@ -19,6 +19,24 @@ This project is a **User Preferences Page** built using the **Webix framework** 
 ---
 
 ## Installation
+### Frontend (Webix)
+
+1. Clone the repository:
+    ```sh
+    git clone https://github.com/your-username/user-preferences-webix.git
+    ```
+2. Navigate to the project folder:
+    ```sh
+    cd user-preference-app-Webix/clientSide_Webix
+    ```
+3. Install dependencies:
+    ```sh
+    npm install
+    ```
+4. Start the development server:
+    ```sh
+    npm run start
+    ```
 
 ### Backend (Django)
 
@@ -35,24 +53,7 @@ This project is a **User Preferences Page** built using the **Webix framework** 
     python manage.py runserver
     ```
 
-### Frontend (Webix)
 
-1. Clone the repository:
-    ```sh
-    git clone https://github.com/your-username/user-preferences-webix.git
-    ```
-2. Navigate to the project folder:
-    ```sh
-    cd user-preferences-webix
-    ```
-3. Install dependencies:
-    ```sh
-    npm install
-    ```
-4. Start the development server:
-    ```sh
-    npm run start
-    ```
 
 ---
 
@@ -81,11 +82,7 @@ user-preferences-webix/
 
 ## Testing
 
-### Backend Tests
-Run the backend tests:
-```sh
-python manage.py test
-```
+
 
 ### Frontend Tests
 Run the frontend tests:
