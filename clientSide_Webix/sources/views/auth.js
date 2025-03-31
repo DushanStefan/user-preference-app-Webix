@@ -26,29 +26,3 @@ export class AuthModel {
     this.user = null;
   }
 }
-
-// export class AuthModel {
-//   constructor() {
-//     this.loggedIn = false; // Initial login state
-//   }
-
-//   // Simulate login by updating the loggedIn state
-//   login(username, password) {
-//     if (username === "admin" && password === "password123") {
-//       this.loggedIn = true;
-//     } else {
-//       this.loggedIn = false;
-//     }
-//     return this.loggedIn;
-//   }
-
-//   // Log out the user
-//   logout() {
-//     this.loggedIn = false;
-//   }
-
-//   // Check if the user is authenticated
-//   isAuthenticated() {
-//     return this.loggedIn;
-//   }
-// }

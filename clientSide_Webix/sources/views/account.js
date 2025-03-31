@@ -5,8 +5,22 @@ export default class AccountSettingsView extends JetView {
     const storedUser = JSON.parse(localStorage.getItem("loggedUser")) || "";
     const storedEmail = JSON.parse(localStorage.getItem("loggedEmail")) || "";
     const storedFullname =
-      JSON.parse(localStorage.getItem("loggedFullname")) || "";
-    console.log(storedUser, storedEmail, storedFullname);
+      JSON.parse(localStorage.getItem("loggedFullName")) || "";
+    const storedMobile = JSON.parse(localStorage.getItem("loggedMobile")) || "";
+    const storedDob = JSON.parse(localStorage.getItem("loggeddob")) || "";
+    const storedBio = JSON.parse(localStorage.getItem("loggedBio")) || "";
+    const storedCountryCode =
+      JSON.parse(localStorage.getItem("loggedcountry_code")) || "";
+    console.log(
+      "account page storage : ",
+      storedUser,
+      storedEmail,
+      storedFullname,
+      storedMobile,
+      storedDob,
+      storedBio,
+      storedCountryCode
+    );
 
     return {
       view: "form",
@@ -26,7 +40,11 @@ export default class AccountSettingsView extends JetView {
               body: this._personalInfoTab(
                 storedUser,
                 storedEmail,
-                storedFullname
+                storedFullname,
+                storedMobile,
+                storedDob,
+                storedBio,
+                storedCountryCode
               ),
             },
             {
@@ -44,7 +62,15 @@ export default class AccountSettingsView extends JetView {
     };
   }
 
-  _personalInfoTab(storedUser, storedEmail, storedFullname) {
+  _personalInfoTab(
+    storedUser,
+    storedEmail,
+    storedFullname,
+    storedMobile,
+    storedDob,
+    storedBio,
+    storedCountryCode
+  ) {
     return {
       view: "scrollview",
       scroll: "y",
@@ -154,17 +180,9 @@ export default class AccountSettingsView extends JetView {
                           { id: "+61", value: "AUS (+61)" },
                           { id: "+94", value: "Sri Lanka (+94)" },
                         ],
-                        value: "+61",
+                        value: storedCountryCode || "+61",
                       },
-                      // {
-                      //   view: "button",
-                      //   value: "✎",
-                      //   width: 30,
-                      //   css: "webix_secondary",
-                      //   click: function () {
-                      //     $$("countryCode").enable();
-                      //   },
-                      // },
+                      
                     ],
                   },
                   {
@@ -175,6 +193,7 @@ export default class AccountSettingsView extends JetView {
                     required: true,
                     bottomPadding: 20,
                     labelWidth: 150,
+                    value: storedMobile,
                     validate: function (value) {
                       return this.validateMobileNumber(value);
                     }.bind(this),
@@ -189,16 +208,9 @@ export default class AccountSettingsView extends JetView {
                         format: "%Y-%m-%d",
                         bottomPadding: 20,
                         labelWidth: 150,
+                        value: new Date(storedDob),
                       },
-                      // {
-                      //   view: "button",
-                      //   value: "✎",
-                      //   width: 30,
-                      //   css: "webix_secondary",
-                      //   click: function () {
-                      //     $$("userForm").elements["dob"].enable();
-                      //   },
-                      // },
+                      
                     ],
                   },
                   {
@@ -209,6 +221,7 @@ export default class AccountSettingsView extends JetView {
                     placeholder: "Tell us about yourself",
                     bottomPadding: 20,
                     labelWidth: 150,
+                    value: storedBio,
                   },
                 ],
                 rules: {
@@ -313,19 +326,7 @@ export default class AccountSettingsView extends JetView {
     };
   }
 
-  /**
-   * Function to disable all form fields when clicking outside.
-   */
-  // _disableAllFields() {
-  //   const form = $$("userForm");
-  //   Object.keys(form.elements).forEach((key) => {
-  //     form.elements[key].disable();
-  //   });
-
-  //   $$("profile_pic_uploader").disable();
-  //   $$("remove_profile_btn").disable();
-  //   $$("countryCode").disable();
-  // }
+  
 
   validateUsername(value) {
     // Check if username contains any spaces
@@ -568,26 +569,7 @@ export default class AccountSettingsView extends JetView {
     </svg>`;
   }
 
-  // savePersonalInfo() {
-  //   const formData = $$("account_settings_form").getValues();
-  //   if (!formData.full_name || !formData.email) {
-  //     webix.message({
-  //       text: "Please fill in required fields",
-  //       type: "error",
-  //     });
-  //     return;
-  //   }
-  //   // if ($$("userForm").validate() == false) {
-  //   //   webix.message("Please fill in the correct details.");
-  //   //   return;
-  //   // }
-
-  //   webix.message({
-  //     text: "Personal Info saved successfully!",
-  //     type: "success",
-  //   });
-  //   console.log("Saved Personal Info:", formData);
-  // }
+  
 
   savePersonalInfo() {
     const form = $$("userForm");
@@ -628,7 +610,7 @@ export default class AccountSettingsView extends JetView {
       });
       return;
     }
-    if (username && username.includes(" ")) {
+    if (formData.username && formData.username.includes(" ")) {
       webix.message({
         type: "error",
         text: "Username cannot contain spaces",
@@ -636,6 +618,56 @@ export default class AccountSettingsView extends JetView {
       form.markInvalid("username", "Username cannot contain spaces");
       return;
     }
+
+    const storedAccessToken =
+      JSON.parse(localStorage.getItem("accessToken")) || "";
+
+    webix
+      .ajax()
+      .headers({
+        Authorization: `Bearer ${storedAccessToken}`, // Add the Authorization header
+        "Content-Type": "application/json", // Ensure correct content type
+      })
+      .post(
+        "http://127.0.0.1:8000/api/accounts/update_account_settings/",
+        formData
+      )
+      .then((response) => response.json()) // Convert response to JSON
+      .then((data) => {
+        console.log("Update Response:", data); // Log the parsed response
+
+        // Log each field separately
+        // console.log("Access Token:", data.access);
+        // console.log("Refresh Token:", data.refresh);
+        // console.log("Message:", data.message);
+        // console.log("Email:", data.email);
+        // console.log("Full Name:", data.full_name);
+        // console.log("Username:", data.username);
+        // console.log("Password:", data.password);
+
+        webix.message("Update successful for " + formData.username);
+
+        localStorage.setItem("loggedUser", JSON.stringify(formData.username));
+        localStorage.setItem("loggedEmail", JSON.stringify(formData.email));
+        localStorage.setItem(
+          "loggedFullName",
+          JSON.stringify(formData.full_name)
+        );
+        localStorage.setItem("loggedMobile", JSON.stringify(formData.mobile));
+        localStorage.setItem("loggeddob", JSON.stringify(formData.dob));
+        localStorage.setItem("loggedBio", JSON.stringify(formData.bio));
+        localStorage.setItem(
+          "loggedcountry_code",
+          JSON.stringify(formData.country_code)
+        );
+      })
+      .catch((error) => {
+        console.error("Update Error:", error.responseText);
+        webix.message({
+          type: "error",
+          text: "Update failed: " + (error.responseText || "Unknown error"),
+        });
+      });
 
     this.disableFields();
     webix.message({
@@ -675,13 +707,6 @@ export default class AccountSettingsView extends JetView {
     );
   }
 
-  // cancelPersonalInfo() {
-  //   this.loadUserData();
-  //   webix.message({
-  //     text: "Personal Info changes cancelled",
-  //     type: "info",
-  //   });
-  // }
 
   cancelPersonalInfo() {
     // Reset the form fields to the last saved user data
@@ -749,15 +774,6 @@ export default class AccountSettingsView extends JetView {
     });
   }
 
-  // saveSecuritySettings() {
-  //   const formData = $$("account_settings_form").getValues();
-  //   // Implement saving security settings logic here
-  //   webix.message({
-  //     text: "Security settings saved successfully!",
-  //     type: "success",
-  //   });
-  //   console.log("Saved Security Settings:", formData);
-  // }
 
   saveSecuritySettings() {
     const formData = $$("account_settings_form").getValues();
@@ -787,6 +803,41 @@ export default class AccountSettingsView extends JetView {
       });
       return;
     }
+
+    const storedAccessToken =
+      JSON.parse(localStorage.getItem("accessToken")) || "";
+
+    webix
+      .ajax()
+      .headers({
+        Authorization: `Bearer ${storedAccessToken}`, // Add the Authorization header
+        "Content-Type": "application/json", // Ensure correct content type
+      })
+      .post("http://127.0.0.1:8000/api/accounts/update_password/", formData)
+      .then((response) => response.json()) // Convert response to JSON
+      .then((data) => {
+        console.log("Security Update Response:", data); // Log the parsed response
+
+        // Log each field separately
+        // console.log("Access Token:", data.access);
+        // console.log("Refresh Token:", data.refresh);
+        // console.log("Message:", data.message);
+        // console.log("Email:", data.email);
+        // console.log("Full Name:", data.full_name);
+        // console.log("Username:", data.username);
+        // console.log("Password:", data.password);
+
+        webix.message("Security Update successful for " + formData.username);
+      })
+      .catch((error) => {
+        console.error("Security Update Error:", error.responseText);
+        webix.message({
+          type: "error",
+          text:
+            "Security Update failed: " +
+            (error.responseText || "Unknown error"),
+        });
+      });
 
     // Proceed with saving the security settings if validation passes
     webix.message({

@@ -76,9 +76,7 @@ export default class SignupPage extends JetView {
     const form = this.getRoot().queryView({ view: "form" });
     if (form.validate()) {
       const values = form.getValues();
-      // if (!values.full_name) {
-      //   values.full_name = "null";
-      // }
+
       console.log("Signup values:", values);
 
       webix
@@ -90,7 +88,7 @@ export default class SignupPage extends JetView {
         .then((data) => {
           console.log("Signup Response:", data); // Log the parsed response
           webix.message("Signup successful for " + values.username);
-          this.app.show("/top/account");
+          this.app.show("/login");
           localStorage.setItem("loggedUser", JSON.stringify(values.username));
           localStorage.setItem("loggedEmail", JSON.stringify(values.email));
           localStorage.setItem(

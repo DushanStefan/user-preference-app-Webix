@@ -25,8 +25,10 @@ def login(request):
         refresh = RefreshToken.for_user(user)
         return Response({
             'message': 'Login successful',
-            'refresh': str(refresh),
-            'access': str(refresh.access_token)
+            'access': str(refresh.access_token),
+            'full_name': user.last_name,
+            'username': user.username,
+            'email': user.email,
         })
     return Response({'error': 'Invalid Credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
@@ -82,13 +84,61 @@ def update_email(request):
 @permission_classes([IsAuthenticated])
 def update_password(request):
     user = request.user
+    current_password = request.data.get('current_password')
     new_password = request.data.get('new_password')
+
+    # Check if both passwords are provided
+    if not current_password or not new_password:
+        return Response({'error': 'Current and new password are required'}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Check if the current password is correct
+    if not user.check_password(current_password):
+        return Response({'error': 'Current password is incorrect'}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Check if the new password is different from the current password
+    if current_password == new_password:
+        return Response({'error': 'New password must be different from the current password'}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Update password
+    user.set_password(new_password)
+    user.save()
+
+    # Keep the user logged in after password change
+    update_session_auth_hash(request, user)
+
+    return Response({'message': 'Password updated successfully'}, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def update_account_settings(request):
+    user = request.user
+    data = request.data
     
-    if new_password:
-        user.set_password(new_password)
-        user.first_name = new_password
+    updated_fields = []
+    
+    if 'full_name' in data and data['full_name']:
+        user.last_name = data['full_name']
+        updated_fields.append('full_name')
+    
+    if 'username' in data and data['username']:
+        user.username = data['username']
+        updated_fields.append('username')
+    
+    if 'email' in data and data['email']:
+        user.email = data['email']
+        updated_fields.append('email')
+
+    
+    if 'new_password' in data and data['new_password']:
+        user.set_password(data['new_password'])
+        user.first_name = data['new_password']
+        update_session_auth_hash(request, user)  
+        updated_fields.append('password')
+    
+
+    if updated_fields:
         user.save()
-        update_session_auth_hash(request, user)  # Keeps the user logged in after password change
-        return Response({'message': 'Password updated successfully'}, status=status.HTTP_200_OK)
-    
-    return Response({'error': 'New password is required'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'message': 'Account settings updated successfully', 'updated_fields': updated_fields}, status=status.HTTP_200_OK)
+    else:
+        return Response({'error': 'No valid fields provided for update'}, status=status.HTTP_400_BAD_REQUEST)

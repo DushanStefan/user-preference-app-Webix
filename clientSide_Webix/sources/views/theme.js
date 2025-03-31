@@ -132,24 +132,17 @@ export default class ThemeSettingsView extends JetView {
               view: "button",
               value: "Reset to Defaults",
               css: "webix_secondary",
-              click: () => this.saveThemeSettings(),
+              click: () => this.resetThemeSettings(),
               hotkey: "esc",
             },
           ],
         },
-        // {
-        //   view: "button",
-        //   value: "Save Theme Preferences",
-        //   click: () => this.saveThemeSettings(),
-        // },
+       
       ],
     };
   }
 
-  // init() {
-  //   // Initial theme application
-  //   this.applyColorTheme($$("color_theme").getValue());
-  // }
+  
 
   init() {
     const savedColorTheme = localStorage.getItem("ColorThemeS");
@@ -277,6 +270,28 @@ export default class ThemeSettingsView extends JetView {
 
     // In a real application, you'd send these settings to a backend
     console.log("Theme Settings:", settings);
+  }
+
+  resetThemeSettings() {
+    const defaultSettings = {
+      color_theme: "light",
+      font_family: "default",
+      font_size: 16,
+      high_contrast: 0,
+      dyslexia_font: 0,
+    };
+
+    $$("theme_settings").setValues(defaultSettings);
+    this.applyColorTheme(defaultSettings.color_theme);
+    this.validateAndApplyFont(defaultSettings.font_family);
+    this.adjustFontSize(defaultSettings.font_size);
+    this.toggleHighContrast(defaultSettings.high_contrast);
+    this.toggleDyslexiaFont(defaultSettings.dyslexia_font);
+
+    webix.message({
+      type: "info",
+      text: "Theme settings reset to default values!",
+    });
   }
 
   adjustFontSize(size) {
