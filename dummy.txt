@@ -1,0 +1,4 @@
+full name:dushan fernando
+username: dushan
+email:dushan@gmail.com
+password:Dushan1234@#$%

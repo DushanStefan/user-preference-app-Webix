@@ -28,7 +28,8 @@ export default class SignupPage extends JetView {
                   labelWidth: 120,
                   name: "username",
                   required: true,
-                  invalidMessage: "Username must be at least 3 characters long",
+                  invalidMessage:
+                    "Username must be at least 3 characters long and cannot contain spaces",
                   validate: (value) =>
                     value && !value.includes(" ") && value.length >= 3,
                 },
@@ -49,8 +50,11 @@ export default class SignupPage extends JetView {
                   name: "password",
                   required: true,
                   invalidMessage:
-                    "Password must be at least 6 characters and contain a number",
-                  validate: (value) => /^(?=.*\d).{6,}$/.test(value),
+                    "Password must be at least 8 characters long and contain both letters and numbers.",
+                  validate: (value) =>
+                    /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@#$%^&+=]{8,}$/.test(
+                      value
+                    ),
                 },
 
                 {

@@ -214,7 +214,12 @@ window.updateNavbar = function () {
   console.log(isLogin);
 
   // Update UI elements dynamically
-  $$("navbar").reconstruct();
+  // $$("navbar").reconstruct();
+  const navbar = $$("navbar");
+  if (navbar) {
+    navbar.define("cols", Navbar.cols); // Redefine columns
+    navbar.refresh(); // Refresh to apply changes
+  }
 };
 // Initialize the context menu
 webix.ready(function () {

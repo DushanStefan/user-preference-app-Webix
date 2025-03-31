@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>API Test</title>
+  </head>
+  <body>
+    <h2>Test Django API</h2>
+    <button onclick="registerUser()">Send POST Request</button>
+    <pre id="response"></pre>
+
+    <script>
+      function registerUser() {
+        fetch("http://127.0.0.1:8000/api/accounts/register/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            username: "testuserr",
+            email: "test@examplee.com",
+            password: "testpassword123",
+            full_name: "jason mike",
+          }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            document.getElementById("response").textContent = JSON.stringify(
+              data,
+              null,
+              2
+            );
+          })
+          .catch((error) => {
+            document.getElementById("response").textContent = "Error: " + error;
+          });
+      }
+    </script>
+  </body>
+</html>
