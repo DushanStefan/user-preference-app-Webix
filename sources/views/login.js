@@ -1,5 +1,5 @@
 import { JetView } from "webix-jet";
-import { Navbar } from "../assets/toolbar";
+import { Navbar } from "./toolbar";
 
 export default class LoginView extends JetView {
   config() {
@@ -10,18 +10,27 @@ export default class LoginView extends JetView {
           view: "form",
           id: "loginForm",
           elements: [
-            { view: "text", label: "Username", name: "username" },
+            {
+              view: "text",
+              label: "Username",
+              labelWidth: 120,
+              name: "username",
+              required: true,
+            },
             {
               view: "text",
               label: "Password",
+              labelWidth: 120,
               type: "password",
               name: "password",
+              required: true,
             },
             {
               view: "button",
               value: "Login",
               css: "webix_primary",
               click: () => this.login(),
+              hotkey: "enter",
             },
           ],
         },
@@ -40,54 +49,16 @@ export default class LoginView extends JetView {
 
     // Try to authenticate
     // if (auth.login(values.username, values.password)) {
-    this.app.show("/top/account");
-    localStorage.setItem("loggedUser", JSON.stringify(false));
+    localStorage.setItem("loggedUser", JSON.stringify(true));
+    console.log(112);
+
+    if (window.updateNavbar) {
+      window.updateNavbar(); // Ensure navbar updates
+    }
+    this.app.show("top/account");
+
     // } else {
     //   webix.message({ type: "error", text: "Invalid credentials" });
     // }
   }
 }
-
-// import { JetView } from "webix-jet";
-// import { AuthModel } from "./auth";
-
-// export default class LoginView extends JetView {
-//   //   constructor(app, name) {
-//   //     super(app, name);
-//   //     this.auth = this.app.getState().auth || new AuthModel(); // Initialize AuthModel instance
-//   //   }
-
-//   init() {
-//     // Initialize AuthModel instance from app state
-//     this.auth = this.app.getState().auth || new AuthModel(); // Ensure AuthModel instance is set
-//   }
-
-//   config() {
-//     return {
-//       view: "form",
-//       id: "loginForm",
-//       elements: [
-//         { view: "text", label: "Username", name: "username" },
-//         { view: "text", label: "Password", type: "password", name: "password" },
-//         {
-//           view: "button",
-//           value: "Login",
-//           click: () => this.login(),
-//         },
-//       ],
-//     };
-//   }
-
-//   // Login method
-//   login() {
-//     const form = this.$$("loginForm");
-//     const values = form.getValues();
-
-//     // Authenticate using AuthModel
-//     if (this.auth.login(values.username, values.password)) {
-//       this.app.show("/top/account"); // Redirect to dashboard if authenticated
-//     } else {
-//       webix.message({ type: "error", text: "Invalid username or password." });
-//     }
-//   }
-// }

@@ -39,6 +39,17 @@ export default class MyApp extends JetApp {
 
 if (!import.meta.env.VITE_BUILD_AS_MODULE) {
   webix.ready(() => {
+    // Remove the 'loggedUser' item from localStorage if it exists
+    // if (localStorage.getItem("loggedUser")) {
+    //   console.log(90);
+    //   localStorage.removeItem("loggedUser");
+    // }
+    // localStorage.removeItem("loggedUser");
+    // console.log(90);
+    // localStorage.setItem("loggedUser", JSON.stringify(true));
+    // console.log(JSON.parse(localStorage.getItem("loggedUser")));
+    // localStorage.removeItem("loggedUser");
+    // console.log(JSON.parse(localStorage.getItem("loggedUser")));
     const app = new MyApp();
     window.app = app; // ⬅️ Set it globally
     app.render();
