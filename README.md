@@ -14,7 +14,7 @@ This project is a **User Preferences Page** built using the **Webix framework** 
 - **Responsive Design**: Works across desktops, tablets, and mobile devices.
 - **Validation & Error Handling**: Ensures data integrity with meaningful error messages.
 - **Accessibility**: Supports keyboard navigation and screen readers.
-- **Testing**: Includes unit and functional tests for reliability.
+- **Testing**: Includes unit and functional tests for reliability..
 
 ---
 
