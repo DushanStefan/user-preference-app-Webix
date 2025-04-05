@@ -97,7 +97,7 @@ export default class ThemeSettingsView extends JetView {
                   onChange: (newValue) => this.toggleHighContrast(newValue),
                 },
                 bottomPadding: 20,
-                labelWidth: 150,
+                labelWidth: 200,
               },
               {
                 view: "switch",
@@ -109,7 +109,7 @@ export default class ThemeSettingsView extends JetView {
                   onChange: (newValue) => this.toggleDyslexiaFont(newValue),
                 },
                 bottomPadding: 20,
-                labelWidth: 150,
+                labelWidth: 200,
               },
             ],
           },
@@ -137,12 +137,9 @@ export default class ThemeSettingsView extends JetView {
             },
           ],
         },
-       
       ],
     };
   }
-
-  
 
   init() {
     const savedColorTheme = localStorage.getItem("ColorThemeS");
