@@ -3,7 +3,6 @@ import { JetView } from "webix-jet";
 export default class PrivacySettingsView extends JetView {
   config() {
     return {
-      
       view: "form",
       id: "privacySettingsForm",
       elements: [
@@ -129,8 +128,6 @@ export default class PrivacySettingsView extends JetView {
       type: "success",
       text: "Privacy settings updated successfully",
     });
-
-   
   }
 
   cancelPrivacyInfo() {
@@ -177,8 +174,6 @@ export default class PrivacySettingsView extends JetView {
           type: "success",
           text: "Your personal data request has been submitted. We'll process it soon.",
         });
-
-        
       },
     });
   }
@@ -189,14 +184,15 @@ export default class PrivacySettingsView extends JetView {
       title: "Account Deletion",
       text: "Are you absolutely sure you want to request account deletion? This action cannot be undone.",
       callback: (result) => {
-        webix.message({
-          type: "success",
-          text: "Your account deletion request has been submitted.",
-        });
-        localStorage.clear(); // This clears all localStorage data
-        this.app.show("/home");
-
-        
+        if (result) {
+          // Executes only if "OK" is pressed
+          webix.message({
+            type: "success",
+            text: "Your account deletion request has been submitted.",
+          });
+          localStorage.clear(); // This clears all localStorage data
+          this.app.show("/home");
+        }
       },
     });
   }
